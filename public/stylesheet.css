@@ -14,3 +14,12 @@ h1 {
 #inputfields{
     padding-left: 290px;
 }
+
+#yoursignature {
+    border: 2px black solid;
+}
+
+.signees {
+  list-style-type: none;
+  text-align: center;
+}

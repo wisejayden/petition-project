@@ -1,24 +1,23 @@
-// var fs = require('fs');
 var canvas = document.getElementById('canvas');
 var submit = $('.submit');
 var ctx = canvas.getContext("2d");
 var sigData = $('#sig');
 var firstName = $('#firstname');
 var lastName = $('#lastname');
-
-
-// const https = require('https');
+var hasSigned = false;
 
 
 
 
-canvas.addEventListener('mousedown', function(event) {
+//Reset x & y
+$(canvas).on('mousedown', function(event) {
     var x, y;
-    console.log("first", x, y);
 
-    canvas.addEventListener('mousemove', function(e) {
+//Locate cursor, draw line and then reset x and y
+    $(canvas).on('mousemove', function(e) {
         var offsetX = e.offsetX;
         var offsetY = e.offsetY;
+
 
         ctx.StrokeStyle = "black";
         ctx.beginPath();
@@ -26,29 +25,31 @@ canvas.addEventListener('mousedown', function(event) {
         ctx.lineTo(offsetX, offsetY);
         x = offsetX;
         y = offsetY;
-        console.log("second", x, y);
-
         ctx.stroke();
 
 
     });
 });
-canvas.addEventListener('mouseup', function(e) {
-    canvas.removeEventListener('mousedown', function(event) {
 
-    });
+
+//Stop drawing when mouse is released. Confirm signature has been signed.
+$(canvas).on('mouseup', function(e) {
+    $(canvas).off('mousemove');
+    hasSigned = true;
 });
-
-
-
 
 
 //submit form tag
 
 
-
+//Check if canvas has been signed. If so, return value of canvas. Else alert user and send error.
 submit.on('click', function(e) {
-    var dataURL = canvas.toDataURL();
-    sigData.val(dataURL);
+    if (hasSigned == true) {
+        var dataURL = canvas.toDataURL();
+        sigData.val(dataURL);
+    } else {
+        alert('Please sign the damn thing');
+    }
+
 
 });

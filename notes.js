@@ -31,3 +31,33 @@ app.post('/petition', function (req, red) {
             })
         })
 })
+
+
+
+
+
+//// NOtes day 2
+
+GET /Petition
+POST /Petition
+GET /thanks
+GET /signers
+GET /(redirects/petitions) (maybe)
+
+
+SELECT * FROM petition (query);
+
+
+
+app.get('/thanks', requireSignature, (req, res) => {
+
+});
+
+
+function requireSignature(req, res, next) {
+    if (!req.cookies.signed) {
+        res.redirect('/petition');
+    } else {
+        next();
+    }
+}
