@@ -61,3 +61,30 @@ function requireSignature(req, res, next) {
         next();
     }
 }
+
+
+
+
+
+
+
+///Day 3 NOtes
+
+
+input type="password" name="password" placeholder="password"
+
+created TIMESTAMP
+unique
+
+//
+// addLogin(req.body.firstname, req.body.lastname, req.body.hiddensig).then((sigId) => {
+//     console.log(req.body.hiddensig);
+//     req.session.hiddensig = sigId;
+//     res.redirect('thanks');
+// })
+// //If anything is wrong with entering data, return error message
+//     .catch(() => {
+//         res.render('home', {
+//             error: true
+//         });
+//     });

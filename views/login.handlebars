@@ -1,0 +1,17 @@
+<h1> Please Log In </h1>
+<img id="image" src="./coming-soon.jpg"></img>
+{{#if error}}
+    <p>You dun goofed up son</p>
+{{/if}}
+
+<div id="inputfields">
+    <form method="post">
+        <input type="text" name ="email"id="email" placeholder="Email Address" value="jayden.wise@hotmail.com" />
+        <input type="password" name="password" placeholder="password" value ="blah" />
+
+        <input type="hidden" name="hiddensig" id="sig" / >
+        <input class="submit" type="submit" value="submit">
+    </form>
+</div>
+
+<p><a href='/register' >Click here to register</a></p>

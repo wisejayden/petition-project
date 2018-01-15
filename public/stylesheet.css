@@ -23,3 +23,8 @@ h1 {
   list-style-type: none;
   text-align: center;
 }
+
+.submit{
+    width: 20em;
+    margin-top: 40px;
+}
