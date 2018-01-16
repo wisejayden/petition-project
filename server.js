@@ -84,7 +84,7 @@ app.post('/register', function(req, res) {
                         first_name: req.session.user,
                         last_name: req.session.lastname,
                         id: sigId,
-                        hasSigned: false
+                        hasSignedned: false
                     };
                     res.redirect('profile');
                 })
@@ -126,9 +126,14 @@ app.post('/login', function(req, res) {
                             first_name: results.rows[0].first,
                             last_name: results.rows[0].last, id: results.rows[0].id
                         };
-
-                        console.log("Password matches!");
-                        res.redirect('/petition');
+                        if(results.rows[0].signature) {
+                            req.session.user.hasSigned = true;
+                            console.log("Setting the object hasSigned", req.session.user);
+                            res.redirect('/thanks');
+                        } else {
+                            console.log("Password matches!");
+                            res.redirect('/petition');
+                        }
                     } else {
                         console.log("something went wrong with your login :(");
                         res.render('login');
@@ -161,18 +166,25 @@ app.get('/petition', function(req, res) {
 */
 
 app.get('/petition', checkCookie, function(req, res) {
-    if (req.session.user.sig_id) {
+    if (req.session.user.hasSigned == true) {
+        console.log("Already has a signture, redirect please")
         res.redirect('/thanks')
     } else {
+        console.log("No signature, sign the damn thing", req.session.user);
         res.render('petition', {
         });
     }
 });
 
 app.post('/petition', function(req, res) {
-    console.log("After signing", req.session)
+    console.log("After signing", req.session);
+    console.log("req.session.hiddensig[0]", req.body.hiddensig[0]);
+    console.log("req.session.hiddensig", req.session.hiddensig);
+
     addSignature(req.body.hiddensig[0], req.session.hiddensig)
         .then(() => {
+            req.session.user.id = req.session.hiddensig;
+            console.log("After assigning the hiddensig to the user id", req.session);
             res.redirect('/thanks');
         })
         .catch(() => {
@@ -195,7 +207,9 @@ app.get('/signout', function(req, res) {
 //
 //Get thankyou page. Call function from module to retrieve signature.
 app.get('/thanks', checkCookie, function(req, res) {
-    getSignature(req.session.hiddensig).then((results) => {
+    console.log("Thanks here is your user id", req.session.user.id)
+    getSignature(req.session.user.id).then((results) => {
+        console.log("Here is your signature", results)
         res.render('thanks', {
             signature: results.rows[0].signature
         });
@@ -209,13 +223,24 @@ app.get('/thanks', checkCookie, function(req, res) {
 app.get('/signatures', checkCookie, function(req, res) {
     showSignees().then((results) => {
         var signees = results.rows;
-        signees.reverse();
+        var homepage = results.rows[0].url;
+        var city = results.rows[0].city;
+        var age = results.rows[0].age;
+
+        console.log("Homepage", homepage);
+        console.log('city', city);
+        console.log('age', age);        signees.reverse();
 
         res.render('signatures', {
-            signatures: signees
+            signatures: signees,
+            Homepages: homepage,
+            cities: city,
+            signersAge: age
+        });
+        app.get('/signatures' + '/' + homepage, checkCookie, function(req, res) {
+            console.log("get homepage");
         });
     });
-
 });
 
 app.listen(app.get('port'), () => console.log("Listening on port 8080"));

@@ -3,7 +3,7 @@
 
     {{#signatures}}
         <ul class="signees">
-            <li>{{ first }} {{ last }}</li>
+            <li><a href="http://localhost:8080/signatures/{{ homepage }}">{{ first }} {{ last }}</a> {{#if age}}({{age}},{{/if}} {{#if city}}{{city}}{{/if}})</li>
         </ul>
     {{/signatures}}
 </div>

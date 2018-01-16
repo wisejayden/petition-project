@@ -64,14 +64,20 @@ module.exports.addSignature = function(sig, id) {
 
 
 
-
+//ALso need from user_profiles age, city, url
 
 module.exports.showSignees = function showSignees () {
     return db
         .query(
-            `SELECT first, last FROM petition`
+            `SELECT * FROM users
+            FULL OUTER JOIN user_profiles
+            ON users.id = user_profiles.user_id`
         )
+        // .query(
+        //     `SELECT first, last FROM petition`
+        // )
         .then(function(results) {
+            console.log(results);
             return results;
         })
         .catch(function(err) {
@@ -84,7 +90,7 @@ module.exports.showSignees = function showSignees () {
 module.exports.getSignature = function getSignature(id) {
     return db
         .query(
-            `SELECT signature FROM petition WHERE id = $1`,
+            `SELECT signature FROM signatures WHERE id = $1`,
             [id]
 
         )
@@ -108,5 +114,19 @@ module.exports.addProfile = function(age, city, homepage, id) {
         })
         .catch(() => {
             console.log('Profile add fail');
+        });
+};
+
+module.exports.getCity = function(city) {
+    return db
+        .query(
+            `SELECT * FROM user_profiles WHERE city = ($1)`,
+            [city]
+        )
+        .then(() => {
+            console.log("Get that city");
+        })
+        .catch(() => {
+            console.log('You aint got that city');
         });
 };
