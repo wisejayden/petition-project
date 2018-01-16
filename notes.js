@@ -88,3 +88,19 @@ unique
 //             error: true
 //         });
 //     });
+
+
+
+
+///Day 4 NOtes
+var str = 'console.log("owned!!!")';
+eval(str);
+
+
+xss == Cross site Scripting
+For use to create a html whitelist for html insertion, to prevent javascript from becoming executable.
+
+app.use(function(req, res, next) {
+    res.setHeader('X-Frame-Options', 'DENY');
+    next();
+});

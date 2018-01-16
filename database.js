@@ -3,14 +3,19 @@ var spicedPg = require('spiced-pg');
 
 var db = spicedPg('postgres:dbadmin:spiced@localhost:5432/petition');
 
+
+
 module.exports.addLogin = function (first, last, email, hashedPass) {
+    console.log("HEllo 3");
     return db
         .query(
-            `INSERT INTO petition (first, last, email, hashed_pass) VALUES ($1, $2, $3, $4) RETURNING id`,
+            `INSERT INTO users (first, last, email, hashed_pass) VALUES ($1, $2, $3, $4) RETURNING id`,
             [first || null, last || null, email || null, hashedPass || null]
         )
         .then(function(results) {
+            const sigId = results.rows[0].id;
             console.log("INSERTION SUCCESSFUL")
+            return sigId;
         })
         .catch(() => {
             console.log("database error");
@@ -20,10 +25,13 @@ module.exports.addLogin = function (first, last, email, hashedPass) {
 module.exports.checkEmail = function (email) {
     return db
         .query(
-            `SELECT * FROM petition WHERE email = $1`,
+            `SELECT * FROM users
+            LEFT JOIN signatures
+            ON users.id = signatures.user_id WHERE email = $1`,
             [email]
         )
         .then(results => {
+            console.log(results);
             // console.log(results.rows[0].hashed_pass);
             console.log("Check email successful");
             return results;
@@ -33,14 +41,17 @@ module.exports.checkEmail = function (email) {
         });
 };
 
+
+
+//fix this
 module.exports.addSignature = function(sig, id) {
     console.log('wassup');
     return db
         .query(
-            `UPDATE petition SET signature = $1 WHERE id = $2`,
+            `INSERT INTO signatures (signature, user_id) VALUES ($1, $2)`,
             [sig, id]
         )
-        .then((results) => {
+        .then(() => {
             console.log("Correctly updating signature");
             // const sigId = results.rows[0].id;
             // console.log(sigId);
@@ -83,5 +94,19 @@ module.exports.getSignature = function getSignature(id) {
         })
         .catch(function(err) {
             console.log("Third err", err);
+        });
+};
+
+module.exports.addProfile = function(age, city, homepage, id) {
+    return db
+        .query(
+            `INSERT INTO user_profiles (age, city, url, user_id) VALUES ($1, $2, $3, $4)`,
+            [age, city, homepage, id]
+        )
+        .then(() => {
+            console.log("Profile add success!");
+        })
+        .catch(() => {
+            console.log('Profile add fail');
         });
 };

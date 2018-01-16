@@ -5,12 +5,23 @@
 var bcrypt = require('bcryptjs');
 
 module.exports.checkCookie = function requireSignature(req, res, next) {
-    if (!req.cookies.id) {
+    if (!req.session.user) {
         res.redirect('/register');
     } else {
         next();
     }
 };
+
+//Add cookie function not working
+/*
+module.exports.addCookie = function (sessionId, first, last, sigId) {
+    sessionId = {
+        first_name: first,
+        last_name: last,
+        sig_id: sigId
+    };
+};
+*/
 
 
 module.exports.hashPassword = function (plainTextPassword) {
