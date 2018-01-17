@@ -104,3 +104,6 @@ app.use(function(req, res, next) {
     res.setHeader('X-Frame-Options', 'DENY');
     next();
 });
+
+const { city, age, url } = req.body;
+const params = [city, age, url]

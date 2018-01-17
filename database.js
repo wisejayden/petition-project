@@ -1,12 +1,10 @@
 
 var spicedPg = require('spiced-pg');
 
-var db = spicedPg('postgres:dbadmin:spiced@localhost:5432/petition');
-
+var db = spicedPg(process.env.DATABASE_URL || 'postgres:dbadmin:spiced@localhost:5432/petition');
 
 
 module.exports.addLogin = function (first, last, email, hashedPass) {
-    console.log("HEllo 3");
     return db
         .query(
             `INSERT INTO users (first, last, email, hashed_pass) VALUES ($1, $2, $3, $4) RETURNING id`,
@@ -22,17 +20,14 @@ module.exports.addLogin = function (first, last, email, hashedPass) {
         })
 };
 
-module.exports.checkEmail = function (email) {
+module.exports.getDetails = function (email) {
     return db
         .query(
-            `SELECT * FROM users
-            LEFT JOIN signatures
-            ON users.id = signatures.user_id WHERE email = $1`,
+            `SELECT * FROM users WHERE email = $1`,
             [email]
         )
         .then(results => {
-            console.log(results);
-            // console.log(results.rows[0].hashed_pass);
+            console.log("Here are the results", results.rows[0]);
             console.log("Check email successful");
             return results;
         })
@@ -45,7 +40,6 @@ module.exports.checkEmail = function (email) {
 
 //fix this
 module.exports.addSignature = function(sig, id) {
-    console.log('wassup');
     return db
         .query(
             `INSERT INTO signatures (signature, user_id) VALUES ($1, $2)`,
@@ -63,7 +57,44 @@ module.exports.addSignature = function(sig, id) {
 };
 
 
+module.exports.profileInfo = function(id) {
+    return db
+        .query(
+            // `SELECT * FROM users
+            // FULL OUTER JOIN user_profiles
+            // ON users.id = user_profiles.user_id
+            // WHERE users.id = $1`,
+            // [id]
 
+            `SELECT * FROM user_profiles
+            WHERE user_id = ($1)`,
+            [id]
+        )
+        .then((results) => {
+            return results;
+        })
+        .catch(() => {
+            console.log("Profile info query error");
+        });
+};
+
+module.exports.updateUsersTable = function(first, last, email, password, id) {
+    if(password === '') {
+        return db
+            .query(
+                `UPDATE users
+                SET first = $1, last = $2, email = $3
+                WHERE id = $4`,
+                [first, last, email, id]
+            )
+            .then(() => {
+                console.log("Update successful!");
+            })
+            .catch(() => {
+                console.log("Update not so successful...");
+            })
+    }
+}
 //ALso need from user_profiles age, city, url
 
 module.exports.showSignees = function showSignees () {
@@ -77,11 +108,10 @@ module.exports.showSignees = function showSignees () {
         //     `SELECT first, last FROM petition`
         // )
         .then(function(results) {
-            console.log(results);
             return results;
         })
-        .catch(function(err) {
-            console.log("second err", err);
+        .catch(function() {
+            console.log("second err");
         });
 };
 
@@ -95,7 +125,7 @@ module.exports.getSignature = function getSignature(id) {
 
         )
         .then(function(results) {
-            // console.log("Signature retrieval results", results);
+            console.log(results);
             return results;
         })
         .catch(function(err) {
@@ -107,7 +137,7 @@ module.exports.addProfile = function(age, city, homepage, id) {
     return db
         .query(
             `INSERT INTO user_profiles (age, city, url, user_id) VALUES ($1, $2, $3, $4)`,
-            [age, city, homepage, id]
+            [age || null, city || null, homepage || null, id]
         )
         .then(() => {
             console.log("Profile add success!");
@@ -120,13 +150,23 @@ module.exports.addProfile = function(age, city, homepage, id) {
 module.exports.getCity = function(city) {
     return db
         .query(
-            `SELECT * FROM user_profiles WHERE city = ($1)`,
+
+            `SELECT * FROM user_profiles
+            JOIN users
+            ON user_profiles.user_id = users.id
+            WHERE LOWER (city) = LOWER ($1)`,
             [city]
         )
-        .then(() => {
-            console.log("Get that city");
+        .then((results) => {
+
+            return results;
         })
         .catch(() => {
             console.log('You aint got that city');
         });
 };
+// SELECT * FROM users
+// FULL OUTER JOIN user_profiles
+// ON users.id = user_profiles.user_id
+
+// WHERE LOWER(city) = LOWER ($1)
