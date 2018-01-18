@@ -23,7 +23,7 @@ module.exports.addLogin = function (first, last, email, hashedPass) {
 module.exports.getDetails = function (email) {
     return db
         .query(
-            `SELECT * FROM users WHERE email = $1`,
+            `SELECT * FROM users WHERE LOWER (email) = LOWER ($1)`,
             [email]
         )
         .then(results => {
@@ -35,7 +35,6 @@ module.exports.getDetails = function (email) {
             console.log("CheckEmailCatch");
         });
 };
-
 
 
 
@@ -164,9 +163,8 @@ module.exports.getSignature = function getSignature(id) {
 module.exports.deleteSignature = function(id) {
     return db
         .query(
-            `UPDATE signatures
-            SET signature = null
-            WHERE id = $1`,
+            `DELETE FROM signatures
+            WHERE user_id = $1`,
             [id]
         )
         .then(() => {

@@ -30,7 +30,7 @@ var getCity = database.getCity;
 var profileInfo = database.profileInfo;
 var updateUsersTable = database.updateUsersTable;
 var updateUser_profilesTable = database.updateUser_profilesTable;
-var deleteSignature = database.deleteSignatures;
+var deleteSignature = database.deleteSignature;
 
 
 
@@ -47,13 +47,11 @@ app.set('port', (process.env.Port || 8080));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-
 app.use(cookieSession({
     secret: process.env.SESSION_SECRET || require('./secrets.json').secret,
     maxAge: 1000 * 60 * 60 * 24 * 14
 }));
-// app.use(csurf());
-
+app.use(csurf());
 
 // csrfToken: req.csrfToken();
 
@@ -70,8 +68,9 @@ app.get('/register', function(req, res) {
     if (req.session.user) {
         res.redirect('/petition');
     } else {
+        console.log(req.session);
         res.render('register', {
-            // csrfToken: req.csrfToken()
+            Token: req.csrfToken()
         });
     }
 });
@@ -100,9 +99,15 @@ app.post('/register', function(req, res) {
 
 
 app.get('/profile', checkCookie, function(req, res) {
+
     res.render('profile', {
+        Token: req.csrfToken()
     });
+
 });
+
+
+
 
 app.post('/profile', function(req, res) {
     addProfile(req.body.age, req.body.city, req.body.homepage, req.session.hiddensig)
@@ -113,12 +118,22 @@ app.post('/profile', function(req, res) {
 });
 
 app.get('/login', function(req, res) {
-    res.render('login', {
-    });
+    if(req.session.user) {
+        console.log("If there is a user redirect to petition", req.session);
+        res.redirect('/petition');
+    } else {
+        console.log("If there is no user you should login", req.session);
+        res.render('login', {
+            Token: req.csrfToken()
+        });
+    }
 });
+
+
 
 //Use email to query for details, check password against hashed password.
 app.post('/login', function(req, res) {
+
     getDetails(req.body.email)
         .then((results) => {
             checkPassword(req.body.password, results.rows[0].hashed_pass)
@@ -155,6 +170,7 @@ app.post('/login', function(req, res) {
         .catch(() => {
             console.log("checkemail catch");
         });
+
 });
 
 
@@ -162,12 +178,14 @@ app.post('/login', function(req, res) {
 
 
 app.get('/petition', checkCookie, function(req, res) {
+    console.log("GETTING TO petition page", req.session.user);
     if (req.session.user.hasSigned == true) {
         console.log("Already has a signture, redirect please");
         res.redirect('/petition/signed');
     } else {
         console.log("No signature, sign the damn thing");
         res.render('petition', {
+            Token: req.csrfToken()
         });
     }
 });
@@ -198,8 +216,17 @@ app.get('/petition/signed', checkCookie, function(req, res) {
         });
 });
 
+//Max Jones id 23
 app.get('/petition/delete/', function(req, res) {
-
+    deleteSignature(req.session.user.id)
+        .then(() => {
+            req.session.user.hasSigned = false;
+            res.redirect('/petition');
+        })
+        .catch(() => {
+            console.log("Signature removal fail");
+            res.redirect('/petition/signed');
+        });
 });
 
 //Get profile info and use handlebars to insert data onto html page.
@@ -209,6 +236,7 @@ app.get('/profile/edit', checkCookie, function(req, res) {
     profileInfo(id).then((results) => {
         var {age, url, city} = results.rows[0];
         res.render('profileedit', {
+            Token: req.csrfToken(),
             first: first_name,
             last: last_name,
             email: email,
@@ -225,7 +253,7 @@ app.get('/profile/edit', checkCookie, function(req, res) {
 
 
 
-app.post('/profile/edit', function(req, res) {
+app.post('/profile/edit', checkCookie, function(req, res) {
     updateUser_profilesTable(req.body, req.session.user.id)
         .then(() => {
             console.log("User profile added, then redirect");
@@ -281,6 +309,7 @@ app.get('/petition/signers', checkCookie, function(req, res) {
         signees.reverse();
 
         res.render('signers', {
+            Token: req.csrfToken(),
             signatures: signees,
             // Homepages: homepage,
             // cities: city,
@@ -306,6 +335,7 @@ app.get('/signers/:cityname', function(req, res) {
             var homepage = results.rows[0].url;
             var age = results.rows[0].age;
             res.render('getcity', {
+                Token: req.csrfToken(),
                 signatures: signees,
                 // Homepages: homepage,
                 // signersAge: age
@@ -321,24 +351,9 @@ app.get('/signers/:cityname', function(req, res) {
 
 ///SIGN OUT NOT WORKING PROPERLY. COOKIE DELETES AND THEN COMES BACK ON REDIRECT
 app.get('/signout', function(req, res) {
-    req.cookies.id = null;
-
+    req.session = null;
     res.redirect('/register');
 
 });
 
 app.listen(process.env.PORT || app.get('port'), () => console.log("Listening on port 8080"));
-
-
-//
-// addLogin(req.body.firstname, req.body.lastname, req.body.hiddensig).then((sigId) => {
-//     console.log(req.body.hiddensig);
-//     req.session.hiddensig = sigId;
-//     res.redirect('signed');
-// })
-// //If anything is wrong with entering data, return error message
-//     .catch(() => {
-//         res.render('home', {
-//             error: true
-//         });
-//     });
