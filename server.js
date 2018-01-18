@@ -29,6 +29,8 @@ var addCookie = middleware.addCookie;
 var getCity = database.getCity;
 var profileInfo = database.profileInfo;
 var updateUsersTable = database.updateUsersTable;
+var updateUser_profilesTable = database.updateUser_profilesTable;
+var deleteSignature = database.deleteSignatures;
 
 
 
@@ -65,8 +67,8 @@ app.get('/', function(req, res) {
 
 //If cookie present, redirect to thankyou page, otherwise present homepage
 app.get('/register', function(req, res) {
-    if (req.session.hiddensig) {
-        res.redirect('/petition/signed');
+    if (req.session.user) {
+        res.redirect('/petition');
     } else {
         res.render('register', {
             // csrfToken: req.csrfToken()
@@ -111,36 +113,36 @@ app.post('/profile', function(req, res) {
 });
 
 app.get('/login', function(req, res) {
-    console.log("At login", req.session.user);
     res.render('login', {
     });
 });
 
+//Use email to query for details, check password against hashed password.
 app.post('/login', function(req, res) {
     getDetails(req.body.email)
         .then((results) => {
-            // console.log(results.rows[0]);
             checkPassword(req.body.password, results.rows[0].hashed_pass)
+            //If it does match, assign cookie containing user info
                 .then(doesMatch => {
                     if (doesMatch) {
-                        console.log('does match', results.rows);
                         req.session.user = {
                             first_name: results.rows[0].first,
                             last_name: results.rows[0].last, email: results.rows[0].email, id:
                             results.rows[0].id
                         };
-                        console.log("After adding id", req.session.user);
-                        if(results.rows[0].signature) {
-                            req.session.user.hasSigned = true;
-                            // console.log("Post login if", req.session.user);
-
-                            res.redirect('/petition/signed');
-                        } else {
-                            // console.log("Post login, else", req.session.user);
-
-                            console.log("Password matches!, redirecting to sign");
-                            res.redirect('/petition');
-                        }
+                        //Check if signature is present.
+                        getSignature(req.session.user.id)
+                            .then((results) => {
+                                if(results.rows.length == 0) {
+                                    res.redirect('/petition');
+                                } else {
+                                    req.session.user.hasSigned = true;
+                                    res.redirect('/petition/signed');
+                                }
+                            })
+                            .catch (() => {
+                                console.log("Password matches but caught after getSignature");
+                            });
                     } else {
                         console.log("something went wrong with your login :(");
                         res.render('login');
@@ -148,7 +150,7 @@ app.post('/login', function(req, res) {
                 })
                 .catch(() => {
                     console.log("doesMatch catch");
-                })
+                });
         })
         .catch(() => {
             console.log("checkemail catch");
@@ -156,42 +158,23 @@ app.post('/login', function(req, res) {
 });
 
 
-//A check to see if logged in user currently has a signature in place... Currently not WORKING
-/*
-app.get('/petition', function(req, res) {
-    console.log("Signing??");
-    console.log(getSignature(req.cookies.id));
-    if (getSignature(req.cookies.id)) {
-        console.log("If works");
-        res.redirect('/signed');
-    } else {
-        console.log('else works');
-        res.render('petition', {
-        });
-    }
-});
-*/
 
 
 
 app.get('/petition', checkCookie, function(req, res) {
     if (req.session.user.hasSigned == true) {
-        console.log("Already has a signture, redirect please")
-        console.log("Before signing", req.session.user);
-        res.redirect('/petition/signed')
+        console.log("Already has a signture, redirect please");
+        res.redirect('/petition/signed');
     } else {
-        console.log("After getting to signing page", req.session.user);
-        console.log("No signature, sign the damn thing", req.session.user);
+        console.log("No signature, sign the damn thing");
         res.render('petition', {
         });
     }
 });
 
 app.post('/petition', function(req, res) {
-    console.log("After posting signature", req.session.user);
     addSignature(req.body.hiddensig[0], req.session.user.id)
         .then(() => {
-            console.log("THENTHENTHENTHEN");
             req.session.user.hasSigned = true;
             res.redirect('/petition/signed');
         })
@@ -201,22 +184,10 @@ app.post('/petition', function(req, res) {
 
 });
 
-
-///SIGN OUT NOT WORKING PROPERLY. COOKIE DELETES AND THEN COMES BACK ON REDIRECT
-app.get('/signout', function(req, res) {
-    req.cookies.id = null;
-
-    res.redirect('/register');
-
-});
-
-
-
 //
 //Get thankyou page. Call function from module to retrieve signature.
 app.get('/petition/signed', checkCookie, function(req, res) {
     getSignature(req.session.user.id).then((results) => {
-        console.log();
         console.log("After signing", req.session.user);
         res.render('signed', {
             signature: results.rows[0].signature
@@ -227,26 +198,22 @@ app.get('/petition/signed', checkCookie, function(req, res) {
         });
 });
 
-app.get('/profile/edit', checkCookie, function(req, res) {
-    console.log(req.body);
-    console.log(req.session.user);
-    var firstName = req.session.user.first_name;
-    var lastName = req.session.user.last_name;
-    var email = req.session.user.email;
+app.get('/petition/delete/', function(req, res) {
 
-    profileInfo(req.session.user.id).then((results) => {
-        // var firstName = results.rows[0].first;
-        // var lastName = results.rows[0].last;
-        // var email = results.rows[0].email;
-        var age = results.rows[0].age;
-        var homepage = results.rows[0].url;
-        var city = results.rows[0].city;
+});
+
+//Get profile info and use handlebars to insert data onto html page.
+app.get('/profile/edit', checkCookie, function(req, res) {
+    var {first_name, last_name, email, id} = req.session.user;
+
+    profileInfo(id).then((results) => {
+        var {age, url, city} = results.rows[0];
         res.render('profileedit', {
-            first: firstName,
-            last: lastName,
+            first: first_name,
+            last: last_name,
             email: email,
             age: age,
-            homepage: homepage,
+            homepage: url,
             city: city
         });
     })
@@ -255,22 +222,53 @@ app.get('/profile/edit', checkCookie, function(req, res) {
         });
 });
 
-app.post('/profile/edit', function(req, res) {
-    updateUsersTable(req.body.firstname, req.body.lastname, req.body.email, req.body.password, req.session.user.id)
-        .then(() => {
-            console.log("Made it to the server!");
-            req.session.user.first_name = req.body.firstname;
-            req.session.user.last_name = req.body.lastname;
-            req.session.user.email = req.body.email;
 
-            console.log("After updating", req.session.user);
-            res.redirect('/profile/edit');
+
+
+app.post('/profile/edit', function(req, res) {
+    updateUser_profilesTable(req.body, req.session.user.id)
+        .then(() => {
+            console.log("User profile added, then redirect");
         })
         .catch(() => {
-            console.log("no luck this time :(");
+            console.log("Profile not added, something is up");
         });
 
+    //If password field has been filled, hash the string and update user table. Then save new user info to cookie.
+    let {password, firstname, lastname, email} = req.body;
+    if (!password == '') {
+        hashPassword(password)
+            .then((hashedPassword) => {
+                password = hashedPassword;
+                updateUsersTable(firstname, lastname, email, password, req.session.user.id)
+                    .then(() => {
+                        req.session.user.first_name = firstname;
+                        req.session.user.last_name = lastname;
+                        req.session.user.email = email;
+                        console.log("Updated user table with new password");
+                        res.redirect('/petition/signed');
+                    })
+                    .catch(() => {
+                        console.log("Did not successfully Update user table with new password");
+                    });
+            });
+    } else {
+        updateUsersTable(firstname, lastname, email, password, req.session.user.id)
+            .then(() => {
+                req.session.user.first_name = firstname;
+                req.session.user.last_name = lastname;
+                req.session.user.email = email;
+                console.log("Updated user table without new password");
+                res.redirect('/petition/signed');
+
+            })
+            .catch(() => {
+                console.log("Did not successfully Update user table without new password");
+            });
+    }
 });
+
+
 
 //Get signees page. Reverse order so the last signed appears on top.
 app.get('/petition/signers', checkCookie, function(req, res) {
@@ -320,7 +318,16 @@ app.get('/signers/:cityname', function(req, res) {
 
 // var city = req.params.cityname
 
-app.listen(app.get('port'), () => console.log("Listening on port 8080"));
+
+///SIGN OUT NOT WORKING PROPERLY. COOKIE DELETES AND THEN COMES BACK ON REDIRECT
+app.get('/signout', function(req, res) {
+    req.cookies.id = null;
+
+    res.redirect('/register');
+
+});
+
+app.listen(process.env.PORT || app.get('port'), () => console.log("Listening on port 8080"));
 
 
 //

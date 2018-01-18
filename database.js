@@ -27,8 +27,8 @@ module.exports.getDetails = function (email) {
             [email]
         )
         .then(results => {
-            console.log("Here are the results", results.rows[0]);
-            console.log("Check email successful");
+            console.log("getDetails then");
+
             return results;
         })
         .catch(() =>{
@@ -38,23 +38,7 @@ module.exports.getDetails = function (email) {
 
 
 
-//fix this
-module.exports.addSignature = function(sig, id) {
-    return db
-        .query(
-            `INSERT INTO signatures (signature, user_id) VALUES ($1, $2)`,
-            [sig, id]
-        )
-        .then(() => {
-            console.log("Correctly updating signature");
-            // const sigId = results.rows[0].id;
-            // console.log(sigId);
-            // return sigId;
-        })
-        .catch(() => {
-            console.log('This seems to run sometimes...');
-        })
-};
+
 
 
 module.exports.profileInfo = function(id) {
@@ -92,9 +76,38 @@ module.exports.updateUsersTable = function(first, last, email, password, id) {
             })
             .catch(() => {
                 console.log("Update not so successful...");
+            });
+    } else {
+        return db
+            .query(
+                `UPDATE users
+                SET first = $1, last = $2, email = $3, hashed_pass = $4
+                WHERE id = $5`,
+                [first, last, email, password, id]
+            )
+            .then(() => {
+                console.log("Updated password correctly");
             })
+            .catch(() => {
+                console.log("Something went wrong with updating your password");
+            });
     }
-}
+};
+module.exports.updateUser_profilesTable = function({age, city, homepage}, id) {
+    return db
+        .query(
+            `UPDATE user_profiles
+            SET age = $1, city = $2, url = $3
+            WHERE user_id = $4`,
+            [age, city, homepage, id]
+        )
+        .then(() => {
+            console.log("Successfully added user profile");
+        })
+        .catch(() => {
+            console.log("Something went wrong with adding the info");
+        });
+};
 //ALso need from user_profiles age, city, url
 
 module.exports.showSignees = function showSignees () {
@@ -115,21 +128,52 @@ module.exports.showSignees = function showSignees () {
         });
 };
 
-
+//fix this
+module.exports.addSignature = function(sig, id) {
+    return db
+        .query(
+            `INSERT INTO signatures (signature, user_id) VALUES ($1, $2)`,
+            [sig, id]
+        )
+        .then(() => {
+            console.log("Correctly updating signature");
+            // const sigId = results.rows[0].id;
+            // console.log(sigId);
+            // return sigId;
+        })
+        .catch(() => {
+            console.log('This seems to run sometimes...');
+        });
+};
 
 module.exports.getSignature = function getSignature(id) {
     return db
         .query(
-            `SELECT signature FROM signatures WHERE id = $1`,
+            `SELECT signature FROM signatures WHERE user_id = $1`,
             [id]
 
         )
         .then(function(results) {
-            console.log(results);
+            console.log("getSignature then");
             return results;
         })
         .catch(function(err) {
-            console.log("Third err", err);
+            console.log("Get signature catch");
+        });
+};
+module.exports.deleteSignature = function(id) {
+    return db
+        .query(
+            `UPDATE signatures
+            SET signature = null
+            WHERE id = $1`,
+            [id]
+        )
+        .then(() => {
+            console.log("Delete signature query then");
+        })
+        .catch(() => {
+            console.log("Delete signature query catch");
         });
 };
 

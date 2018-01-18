@@ -44,10 +44,8 @@ module.exports.checkPassword = function checkPassword(textEnteredInLoginForm, ha
     return new Promise(function(resolve, reject) {
         bcrypt.compare(textEnteredInLoginForm, hashedPasswordFromDatabase, function(err, doesMatch) {
             if (err) {
-                console.log("checkPasword if");
                 reject(err);
             } else {
-                console.log("checkPasword else");
                 resolve(doesMatch);
             }
         });
