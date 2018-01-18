@@ -8,7 +8,7 @@ var path = require('path');
 var database = require('./database.js');
 var middleware = require('./middleware.js');
 var cookieSession = require('cookie-session');
-var secrets = require('./secrets.json');
+// var secrets = require('./secrets.json');
 var bcrypt = require('bcryptjs');
 var app = express();
 const csurf = require('csurf');
@@ -49,7 +49,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cookieSession({
-    secret: secrets.secret,
+    secret: process.env.SESSION_SECRET || require('./secrets.json').secret,
     maxAge: 1000 * 60 * 60 * 24 * 14
 }));
 // app.use(csurf());
