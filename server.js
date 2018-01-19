@@ -70,18 +70,23 @@ app.use(csurf());
 
 
 
+
+
 //If no URL, redirect to home
 app.get('/', function(req, res) {
+    console.log("/", req.session.user);
     res.redirect('/register');
 });
 
 //If cookie present, redirect to thankyou page, otherwise present homepage
 app.get('/register',checkForUser, function(req, res) {
+    console.log("/register", req.session.user);
     res.render('register', {
         Token: req.csrfToken()
     });
 
 });
+
 
 
 //Update database with input fields and assign cookie, then redirect to thankyou page.
@@ -92,8 +97,9 @@ app.post('/register', function(req, res) {
                 .then((sigId) => {
                     req.session.hiddensig = sigId;
                     req.session.user = {
-                        first_name: req.session.user,
-                        last_name: req.session.lastname,
+                        first_name: req.body.firstname,
+                        last_name: req.body.lastname,
+                        email: req.body.email,
                         id: req.session.hiddensig,
                         hasSigned: false
                     };
@@ -101,12 +107,17 @@ app.post('/register', function(req, res) {
                 })
                 .catch(() => {
                     console.log("Registration error");
+                    res.render('register');
                 });
         });
 });
 
 
 app.get('/profile', checkCookie, function(req, res) {
+    console.log("/profile", req.session.user);
+    //On register, skips login and result is
+//    /profile { id: 6, hasSigned: false }
+
     if (req.session.user.profile) {
         res.redirect('petition');
     } else {
@@ -131,6 +142,7 @@ app.post('/profile', function(req, res) {
 
 
 app.get('/login', checkForUser, function(req, res) {
+    console.log("/login", req.session.user);
     res.render('login', {
         Token: req.csrfToken()
     });
@@ -194,6 +206,7 @@ app.post('/login', function(req, res) {
 
 
 app.get('/petition', checkCookie, checkProfile,  function(req, res) {
+    console.log("/petition", req.session.user);
     if (req.session.user.hasSigned == true) {
         console.log("Already has a signture, redirect please");
         res.redirect('/petition/signed');
@@ -220,6 +233,7 @@ app.post('/petition', function(req, res) {
 //
 //Get thankyou page. Call function from module to retrieve signature.
 app.get('/petition/signed', checkCookie, checkProfile, checkForSignature, function(req, res) {
+    console.log("/petition/signed", req.session.user);
     getSignature(req.session.user.id).then((results) => {
         res.render('signed', {
             signature: results.rows[0].signature
@@ -245,9 +259,12 @@ app.get('/petition/delete/', checkCookie, checkForSignature, function(req, res) 
 
 //Get profile info and use handlebars to insert data onto html page.
 app.get('/profile/edit', checkCookie, checkProfile, function(req, res) {
+    console.log("/profile/edit", req.session.user);
+    console.log("On profile load check session", req.session.user);
     var {first_name, last_name, email, id} = req.session.user;
 
     profileInfo(id).then((results) => {
+        console.log("ON profile edit load view results", results.rows);
         var {age, url, city} = results.rows[0];
         res.render('profileedit', {
             Token: req.csrfToken(),
@@ -314,11 +331,13 @@ app.post('/profile/edit', checkCookie, function(req, res) {
 
 //Get signees page. Reverse order so the last signed appears on top.
 app.get('/petition/signers', checkCookie, checkProfile, checkForSignature, function(req, res) {
+    console.log("/petition/signers", req.session.user);
     showSignees().then((results) => {
         var signees = results.rows;
-        for (var i = 0; i < results.rows.length; i++) {
-            console.log(results.rows[i].first);
-        }
+        console.log(results.rows);
+        // for (var i = 0; i < results.rows.length; i++) {
+        //     console.log(results.rows[i].first);
+        // }
         // var homepage = results.rows[0].url;
         // var city = results.rows[0].city;
         // var age = results.rows[0].age;
@@ -337,6 +356,7 @@ app.get('/petition/signers', checkCookie, checkProfile, checkForSignature, funct
 
 
 app.get('/signers/:cityname', checkCookie, checkProfile, checkForSignature, function(req, res) {
+    console.log("/signers/:cityname", req.session.user);
     var city = req.params.cityname;
     getCity(city)
         .then((results) => {
@@ -362,6 +382,10 @@ app.get('/signout', function(req, res) {
     req.session = null;
     res.redirect('/register');
 
+});
+
+app.get('*', function(req, res) {
+    res.sendStatus(404);
 });
 
 app.listen(process.env.PORT || app.get('port'), () => console.log("Listening on port 8080"));

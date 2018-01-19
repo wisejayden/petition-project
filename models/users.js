@@ -12,9 +12,6 @@ module.exports.addLogin = function (first, last, email, hashedPass) {
             const sigId = results.rows[0].id;
             console.log("INSERTION SUCCESSFUL");
             return sigId;
-        })
-        .catch(() => {
-            console.log("database error");
         });
 };
 
