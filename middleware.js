@@ -4,8 +4,16 @@
 
 var bcrypt = require('bcryptjs');
 
+module.exports.checkForUser = function (req, res, next) {
+    if (req.session.user) {
+        console.log("User already logged in");
+        res.redirect('/profile');
+    } else {
+        next();
+    }
+};
 
-module.exports.checkCookie = function requireSignature(req, res, next) {
+module.exports.checkCookie = function (req, res, next) {
     if (!req.session.user) {
         res.redirect('/register');
     } else {
@@ -57,7 +65,7 @@ module.exports.hashPassword = function (plainTextPassword) {
     });
 };
 
-module.exports.checkPassword = function checkPassword(textEnteredInLoginForm, hashedPasswordFromDatabase) {
+module.exports.checkPassword = function (textEnteredInLoginForm, hashedPasswordFromDatabase) {
     return new Promise(function(resolve, reject) {
         bcrypt.compare(textEnteredInLoginForm, hashedPasswordFromDatabase, function(err, doesMatch) {
             if (err) {

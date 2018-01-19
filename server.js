@@ -32,7 +32,8 @@ var updateUsersTable = database.updateUsersTable;
 var updateUser_profilesTable = database.updateUser_profilesTable;
 var deleteSignature = database.deleteSignature;
 var checkProfile = middleware.checkProfile;
-var checkForSignature = middleware.checkForSignature
+var checkForSignature = middleware.checkForSignature;
+var checkForUser = middleware.checkForUser;
 
 
 
@@ -66,15 +67,12 @@ app.get('/', function(req, res) {
 });
 
 //If cookie present, redirect to thankyou page, otherwise present homepage
-app.get('/register', function(req, res) {
-    if (req.session.user) {
-        res.redirect('/petition');
-    } else {
-        console.log(req.session);
-        res.render('register', {
-            Token: req.csrfToken()
-        });
-    }
+app.get('/register',checkForUser, function(req, res) {
+    console.log(req.session);
+    res.render('register', {
+        Token: req.csrfToken()
+    });
+
 });
 
 
@@ -89,7 +87,7 @@ app.post('/register', function(req, res) {
                         first_name: req.session.user,
                         last_name: req.session.lastname,
                         id: req.session.hiddensig,
-                        hasSignedned: false
+                        hasSigned: false
                     };
                     res.redirect('profile');
                 })
@@ -101,6 +99,7 @@ app.post('/register', function(req, res) {
 
 
 app.get('/profile', checkCookie, function(req, res) {
+    console.log('req.session.user', req.session.user);
     if (req.session.user.profile) {
         res.redirect('petition');
     } else {
@@ -126,16 +125,11 @@ app.post('/profile', function(req, res) {
 
 
 
-app.get('/login', function(req, res) {
-    if(req.session.user) {
-        console.log("If there is a user redirect to petition", req.session);
-        res.redirect('/petition');
-    } else {
-        console.log("If there is no user you should login", req.session);
-        res.render('login', {
-            Token: req.csrfToken()
-        });
-    }
+app.get('/login', checkForUser, function(req, res) {
+    console.log("If there is no user you should login", req.session);
+    res.render('login', {
+        Token: req.csrfToken()
+    });
 });
 
 
@@ -156,11 +150,12 @@ app.post('/login', function(req, res) {
                         };
                         profileInfo(req.session.user.id)
                             .then((results) => {
-                                console.log("THIS IS WHAT I AM TESTING!!!", results.rows)
+                                console.log("THIS IS WHAT I AM TESTING!!!", results.rows.length)
                                 if(results.rows.length == 0) {
                                     console.log("Profile not filled, redirect to profile");
                                     res.redirect('profile');
                                 } else {
+                                    req.session.user.profile = true;
                                     getSignature(req.session.user.id)
                                         .then((results) => {
                                             if(results.rows.length == 0) {
@@ -223,7 +218,7 @@ app.post('/petition', function(req, res) {
 
 //
 //Get thankyou page. Call function from module to retrieve signature.
-app.get('/petition/signed', checkCookie, checkProfile,  function(req, res) {
+app.get('/petition/signed', checkCookie, checkProfile, checkForSignature, function(req, res) {
     getSignature(req.session.user.id).then((results) => {
         console.log("After signing", req.session.user);
         res.render('signed', {
@@ -236,7 +231,7 @@ app.get('/petition/signed', checkCookie, checkProfile,  function(req, res) {
 });
 
 //Max Jones id 23
-app.get('/petition/delete/', function(req, res) {
+app.get('/petition/delete/', checkCookie, checkForSignature, function(req, res) {
     deleteSignature(req.session.user.id)
         .then(() => {
             req.session.user.hasSigned = false;
