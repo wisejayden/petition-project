@@ -1,39 +1,49 @@
 var express = require('express');
 var hb = require('express-handlebars');
-//Body parser gives you req.body
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var https = require('https');
 var path = require('path');
-var database = require('./database.js');
 var middleware = require('./middleware.js');
 var cookieSession = require('cookie-session');
-// var secrets = require('./secrets.json');
 var bcrypt = require('bcryptjs');
 var app = express();
 const csurf = require('csurf');
+var usersModel = require('./models/users.js');
+var signaturesModel = require('./models/signatures.js');
+var user_profilesModel = require('./models/user_profiles.js');
+// var secrets = require('./secrets.json');
 
 
 
-//Module imports
-var showSignees = database.showSignees;
-var addLogin = database.addLogin;
-var getSignature = database.getSignature;
-var checkCookie = middleware.checkCookie;
-var hashPassword = middleware.hashPassword;
-var checkPassword = middleware.checkPassword;
-var getDetails = database.getDetails;
-var addSignature = database.addSignature;
-var addProfile = database.addProfile;
-var addCookie = middleware.addCookie;
-var getCity = database.getCity;
-var profileInfo = database.profileInfo;
-var updateUsersTable = database.updateUsersTable;
-var updateUser_profilesTable = database.updateUser_profilesTable;
-var deleteSignature = database.deleteSignature;
+//User Models
+var showSignees = usersModel.showSignees;
+var addLogin = usersModel.addLogin;
+var getDetails = usersModel.getDetails;
+var updateUsersTable = usersModel.updateUsersTable;
+
+//user_profile Models
+var profileInfo = user_profilesModel.profileInfo;
+var updateUser_profilesTable = user_profilesModel.updateUser_profilesTable;
+var addProfile = user_profilesModel.addProfile;
+var getCity = user_profilesModel.getCity;
+
+//Signature models
+var addSignature = signaturesModel.addSignature;
+var getSignature = signaturesModel.getSignature;
+var deleteSignature = signaturesModel.deleteSignature;
+
+
+
+//Middleware
 var checkProfile = middleware.checkProfile;
 var checkForSignature = middleware.checkForSignature;
 var checkForUser = middleware.checkForUser;
+var checkCookie = middleware.checkCookie;
+var hashPassword = middleware.hashPassword;
+var checkPassword = middleware.checkPassword;
+var addCookie = middleware.addCookie;
+
 
 
 
@@ -56,7 +66,6 @@ app.use(cookieSession({
 }));
 app.use(csurf());
 
-// csrfToken: req.csrfToken();
 
 
 
@@ -307,6 +316,9 @@ app.post('/profile/edit', checkCookie, function(req, res) {
 app.get('/petition/signers', checkCookie, checkProfile, checkForSignature, function(req, res) {
     showSignees().then((results) => {
         var signees = results.rows;
+        for (var i = 0; i < results.rows.length; i++) {
+            console.log(results.rows[i].first);
+        }
         // var homepage = results.rows[0].url;
         // var city = results.rows[0].city;
         // var age = results.rows[0].age;
