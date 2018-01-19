@@ -4,9 +4,26 @@
 
 var bcrypt = require('bcryptjs');
 
+
 module.exports.checkCookie = function requireSignature(req, res, next) {
     if (!req.session.user) {
         res.redirect('/register');
+    } else {
+        next();
+    }
+};
+
+module.exports.checkProfile = function(req, res, next) {
+    if(!req.session.user.profile) {
+        res.redirect('/profile');
+    } else {
+        next();
+    }
+};
+module.exports.checkForSignature = function(req, res, next) {
+    if(!req.session.user.hasSigned == true) {
+        console.log("You must sign before you can access these pages");
+        res.redirect('/petition');
     } else {
         next();
     }
