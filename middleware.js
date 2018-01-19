@@ -37,17 +37,6 @@ module.exports.checkForSignature = function(req, res, next) {
     }
 };
 
-//Add cookie function not working
-/*
-module.exports.addCookie = function (sessionId, first, last, sigId) {
-    sessionId = {
-        first_name: first,
-        last_name: last,
-        sig_id: sigId
-    };
-};
-*/
-
 
 module.exports.hashPassword = function (plainTextPassword) {
     return new Promise(function(resolve, reject) {

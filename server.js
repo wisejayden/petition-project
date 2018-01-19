@@ -15,7 +15,6 @@ var user_profilesModel = require('./models/user_profiles.js');
 // var secrets = require('./secrets.json');
 
 
-
 //User Models
 var showSignees = usersModel.showSignees;
 var addLogin = usersModel.addLogin;
@@ -33,8 +32,6 @@ var addSignature = signaturesModel.addSignature;
 var getSignature = signaturesModel.getSignature;
 var deleteSignature = signaturesModel.deleteSignature;
 
-
-
 //Middleware
 var checkProfile = middleware.checkProfile;
 var checkForSignature = middleware.checkForSignature;
@@ -42,13 +39,6 @@ var checkForUser = middleware.checkForUser;
 var checkCookie = middleware.checkCookie;
 var hashPassword = middleware.hashPassword;
 var checkPassword = middleware.checkPassword;
-var addCookie = middleware.addCookie;
-
-
-
-
-
-
 
 
 app.use(cookieParser());
@@ -65,9 +55,6 @@ app.use(cookieSession({
     maxAge: 1000 * 60 * 60 * 24 * 14
 }));
 app.use(csurf());
-
-
-
 
 
 
@@ -114,10 +101,6 @@ app.post('/register', function(req, res) {
 
 
 app.get('/profile', checkCookie, function(req, res) {
-    console.log("/profile", req.session.user);
-    //On register, skips login and result is
-//    /profile { id: 6, hasSigned: false }
-
     if (req.session.user.profile) {
         res.redirect('petition');
     } else {
@@ -142,7 +125,6 @@ app.post('/profile', function(req, res) {
 
 
 app.get('/login', checkForUser, function(req, res) {
-    console.log("/login", req.session.user);
     res.render('login', {
         Token: req.csrfToken()
     });
@@ -183,9 +165,7 @@ app.post('/login', function(req, res) {
                                             console.log("Password matches but caught after getSignature");
                                         });
                                 }
-                            })
-                        // Check if signature is present.
-
+                            });
                     } else {
                         console.log("something went wrong with your login");
                         res.render('login');
@@ -203,10 +183,7 @@ app.post('/login', function(req, res) {
 
 
 
-
-
 app.get('/petition', checkCookie, checkProfile,  function(req, res) {
-    console.log("/petition", req.session.user);
     if (req.session.user.hasSigned == true) {
         console.log("Already has a signture, redirect please");
         res.redirect('/petition/signed');
@@ -227,13 +204,11 @@ app.post('/petition', function(req, res) {
         .catch(() => {
             console.log("Server side signature add catch");
         });
-
 });
 
 //
 //Get thankyou page. Call function from module to retrieve signature.
 app.get('/petition/signed', checkCookie, checkProfile, checkForSignature, function(req, res) {
-    console.log("/petition/signed", req.session.user);
     getSignature(req.session.user.id).then((results) => {
         res.render('signed', {
             signature: results.rows[0].signature
@@ -244,7 +219,6 @@ app.get('/petition/signed', checkCookie, checkProfile, checkForSignature, functi
         });
 });
 
-//Max Jones id 23
 app.get('/petition/delete/', checkCookie, checkForSignature, function(req, res) {
     deleteSignature(req.session.user.id)
         .then(() => {
@@ -259,10 +233,7 @@ app.get('/petition/delete/', checkCookie, checkForSignature, function(req, res) 
 
 //Get profile info and use handlebars to insert data onto html page.
 app.get('/profile/edit', checkCookie, checkProfile, function(req, res) {
-    console.log("/profile/edit", req.session.user);
-    console.log("On profile load check session", req.session.user);
     var {first_name, last_name, email, id} = req.session.user;
-
     profileInfo(id).then((results) => {
         console.log("ON profile edit load view results", results.rows);
         var {age, url, city} = results.rows[0];
@@ -282,8 +253,6 @@ app.get('/profile/edit', checkCookie, checkProfile, function(req, res) {
 });
 
 
-
-
 app.post('/profile/edit', checkCookie, function(req, res) {
     updateUser_profilesTable(req.body, req.session.user.id)
         .then(() => {
@@ -292,7 +261,6 @@ app.post('/profile/edit', checkCookie, function(req, res) {
         .catch(() => {
             console.log("Profile not added, something is up");
         });
-
     //If password field has been filled, hash the string and update user table. Then save new user info to cookie.
     let {password, firstname, lastname, email} = req.body;
     if (!password == '') {
@@ -328,56 +296,36 @@ app.post('/profile/edit', checkCookie, function(req, res) {
 });
 
 
-
 //Get signees page. Reverse order so the last signed appears on top.
 app.get('/petition/signers', checkCookie, checkProfile, checkForSignature, function(req, res) {
-    console.log("/petition/signers", req.session.user);
     showSignees().then((results) => {
         var signees = results.rows;
-        console.log(results.rows);
-        // for (var i = 0; i < results.rows.length; i++) {
-        //     console.log(results.rows[i].first);
-        // }
-        // var homepage = results.rows[0].url;
-        // var city = results.rows[0].city;
-        // var age = results.rows[0].age;
-
         signees.reverse();
-
         res.render('signers', {
             Token: req.csrfToken(),
             signatures: signees,
-            // Homepages: homepage,
-            // cities: city,
-            // signersAge: age
         });
     });
 });
 
 
+
 app.get('/signers/:cityname', checkCookie, checkProfile, checkForSignature, function(req, res) {
-    console.log("/signers/:cityname", req.session.user);
     var city = req.params.cityname;
     getCity(city)
         .then((results) => {
             var signees = results.rows;
-            var homepage = results.rows[0].url;
-            var age = results.rows[0].age;
             res.render('getcity', {
                 Token: req.csrfToken(),
                 signatures: signees,
-                // Homepages: homepage,
-                // signersAge: age
             });
         })
         .catch(() => {
-            console.log('Errer getting city');
+            console.log('Error getting city');
         });
 });
 
 
-
-///SIGN OUT NOT WORKING PROPERLY. COOKIE DELETES AND THEN COMES BACK ON REDIRECT
 app.get('/signout', function(req, res) {
     req.session = null;
     res.redirect('/register');
