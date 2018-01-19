@@ -68,7 +68,6 @@ app.get('/', function(req, res) {
 
 //If cookie present, redirect to thankyou page, otherwise present homepage
 app.get('/register',checkForUser, function(req, res) {
-    console.log(req.session);
     res.render('register', {
         Token: req.csrfToken()
     });
@@ -92,18 +91,16 @@ app.post('/register', function(req, res) {
                     res.redirect('profile');
                 })
                 .catch(() => {
-                    console.log("error");
+                    console.log("Registration error");
                 });
         });
 });
 
 
 app.get('/profile', checkCookie, function(req, res) {
-    console.log('req.session.user', req.session.user);
     if (req.session.user.profile) {
         res.redirect('petition');
     } else {
-        console.log("Checking for hiddensig", req.session.user);
         res.render('profile', {
             Token: req.csrfToken()
         });
@@ -118,7 +115,6 @@ app.post('/profile', function(req, res) {
         .then(() => {
             console.log("Redirecting to login");
             req.session.user.profile = true;
-            console.log("After posting profile, print out user", req.session.user);
             res.redirect('petition');
         });
 });
@@ -126,7 +122,6 @@ app.post('/profile', function(req, res) {
 
 
 app.get('/login', checkForUser, function(req, res) {
-    console.log("If there is no user you should login", req.session);
     res.render('login', {
         Token: req.csrfToken()
     });
@@ -136,7 +131,6 @@ app.get('/login', checkForUser, function(req, res) {
 
 //Use email to query for details, check password against hashed password.
 app.post('/login', function(req, res) {
-
     getDetails(req.body.email)
         .then((results) => {
             checkPassword(req.body.password, results.rows[0].hashed_pass)
@@ -150,7 +144,6 @@ app.post('/login', function(req, res) {
                         };
                         profileInfo(req.session.user.id)
                             .then((results) => {
-                                console.log("THIS IS WHAT I AM TESTING!!!", results.rows.length)
                                 if(results.rows.length == 0) {
                                     console.log("Profile not filled, redirect to profile");
                                     res.redirect('profile');
@@ -173,7 +166,7 @@ app.post('/login', function(req, res) {
                         // Check if signature is present.
 
                     } else {
-                        console.log("something went wrong with your login :(");
+                        console.log("something went wrong with your login");
                         res.render('login');
                     }
                 })
@@ -192,7 +185,6 @@ app.post('/login', function(req, res) {
 
 
 app.get('/petition', checkCookie, checkProfile,  function(req, res) {
-    console.log("GETTING TO petition page", req.session.user);
     if (req.session.user.hasSigned == true) {
         console.log("Already has a signture, redirect please");
         res.redirect('/petition/signed');
@@ -220,7 +212,6 @@ app.post('/petition', function(req, res) {
 //Get thankyou page. Call function from module to retrieve signature.
 app.get('/petition/signed', checkCookie, checkProfile, checkForSignature, function(req, res) {
     getSignature(req.session.user.id).then((results) => {
-        console.log("After signing", req.session.user);
         res.render('signed', {
             signature: results.rows[0].signature
         });
@@ -332,19 +323,11 @@ app.get('/petition/signers', checkCookie, checkProfile, checkForSignature, funct
     });
 });
 
-// app.get('/signatures' + '/' + homepage, checkCookie, function(req, res) {
-//     console.log("get homepage");
-// });
 
 app.get('/signers/:cityname', checkCookie, checkProfile, checkForSignature, function(req, res) {
     var city = req.params.cityname;
-
-
-
     getCity(city)
         .then((results) => {
-
-            console.log("City got");
             var signees = results.rows;
             var homepage = results.rows[0].url;
             var age = results.rows[0].age;
@@ -356,11 +339,10 @@ app.get('/signers/:cityname', checkCookie, checkProfile, checkForSignature, func
             });
         })
         .catch(() => {
-            console.log('no city got');
+            console.log('Errer getting city');
         });
 });
 
-// var city = req.params.cityname
 
 
 ///SIGN OUT NOT WORKING PROPERLY. COOKIE DELETES AND THEN COMES BACK ON REDIRECT
