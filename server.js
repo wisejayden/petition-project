@@ -9,6 +9,7 @@ var cookieSession = require('cookie-session');
 var bcrypt = require('bcryptjs');
 var app = express();
 const csurf = require('csurf');
+
 var usersModel = require('./models/users.js');
 var signaturesModel = require('./models/signatures.js');
 var user_profilesModel = require('./models/user_profiles.js');

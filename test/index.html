@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Petition</title>
+        <link rel="stylesheet" href="stylesheet.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../public/images/favicon.ico" />
+
+    </head>
+    <body>
+        <!-- <h1> Sign our Petition </h1> -->
+        <!-- <img id="image" src="../public/coming-soon.jpg"></img> -->
+
+        <form>
+          <h1>first name:</h1>
+
+          <div id="from">
+            <label for="name">last name:</label>
+            <input type="text" id="name" name="user_name">
+          </div>
+
+          <div id="reply">
+            <label for="mail">email:</label>
+            <input type="email" id="mail" name="user_email">
+          </div>
+
+          <div id="message">
+            <label for="msg">Petition to ban Winter <br>in Berlin</label>
+            <textarea id="msg" name="user_message"></textarea>
+          </div>
+
+          <div class="button">
+            <button type="submit">Register now</button>
+          </div>
+      </form>
+
+        <!-- <div id="inputfields">
+            <form method="post">
+                <input type="text" name ="firstname"id="firstname" placeholder="First Name" value =""/>
+                <input type="text" name="lastname" id="lastName" placeholder="Last Name" value="" />
+                <input type="text" name ="email"id="email" placeholder="Email Address" value="" />
+                <input type="password" name="password" placeholder="password" value=""/>
+
+                <input type="hidden" name="hiddensig" id="sig" / >
+                <input class="submit" type="submit" value="submit">
+                <input type="hidden" name="_csrf" value="{{Token}}">
+
+            </form>
+            <!-- <body class="background" background="../public/images/wintertrees.jpg"> -->
+
+        <!-- <p><a href='/login' >Click Here to log in</a></p> -->
+
+    </body>
+</html>
