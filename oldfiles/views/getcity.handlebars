@@ -1,0 +1,18 @@
+<img id="image" src="/coming-soon.jpg"></img>
+<div class="signatures">
+
+
+
+    {{#signatures}}
+        <ul class="signees">
+            <li><a href="http://{{ url }}">
+                {{ first }} {{ last }}</a>
+                {{#if age}}({{age}}){{/if}}</li>
+            <!-- <a href="'/signatures/' + {{city}} " > {{city }} </a> -->
+        </ul>
+    {{/signatures}}
+</div>
+
+<p><a href='/petition/signed' >Go back</a></p>
+<p><a href='/signout' >If you wish to sign out</a></p>
+<a href='/profile/edit'>Click here to edit your profile</a>

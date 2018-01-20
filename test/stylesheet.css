@@ -58,13 +58,13 @@ h1 {
   font : 1em "typewriter", sans-serif;
 }
 
-#from {
+#lastnamelabel {
   position: absolute;
   left : 398px;
   top  : 235px;
 }
 
-#reply {
+#emaillabel {
   position: absolute;
   left : 390px;
   top  : 285px;

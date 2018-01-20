@@ -1,30 +1,268 @@
+/*
+https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Styling_HTML_forms
+ */
+
+/* Define fonts */
 body {
-    background-color: rgb(105, 175, 214);
+    font  : 21px sans-serif;
+
+    padding : 2em;
+    margin  : 0;
+    background-image: url("/images/wintertrees.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    font  : 21px sans-serif;
+
+    padding : 2em;
+    margin  : 0;
 }
-h1 {
-    text-align: center;
+
+@font-face {
+    font-family: 'handwriting';
+    src: url('/fonts/journal-webfont.woff2') format('woff2'),
+         url('/fonts/journal-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
-#image {
-    padding-left: 290px;
+
+@font-face {
+    font-family: 'typewriter';
+    src: url('/fonts/veteran_typewriter-webfont.woff2') format('woff2'),
+         url('/fonts/veteran_typewriter-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
+
+
+
+form {
+    top: 50px;
+    border: solid black 4px;
+    border-radius: 5px;
+    position: relative;
+
+      width  : 740px;
+      height : 498px;
+      margin : 0 auto;
+
+      background: url('/images/postcardregister.png');
+}
+
+#formlogin {
+    background: url('/images/postcardlogin.png');
+}
+
+#formprofile {
+    background: url('/images/postcardprofile.png');
+
+}
+
+#formsign {
+    background: url('/images/postcardsign.png')
+}
+
+
+
+
+
+/* Position elements */
+
+
+
+#firstregolabel {
+  position : absolute;
+  left : 380px;
+  top  : 185px;
+
+  font : 1em "typewriter", sans-serif;
+}
+
+#lastregolabel {
+  position: absolute;
+  left : 380px;
+  top  : 235px;
+}
+
+#emailregolabel {
+  position: absolute;
+  left : 380px;
+  top  : 285px;
+}
+#regopassword {
+    position: absolute;
+    left : 380px;
+    top  : 335px;
+}
+
+#message {
+  position: absolute;
+  left : 20px;
+  top  : 70px;
+}
+.emailregoinputfield {
+    margin-left: 40px;
+}
+
+#emailloginlabel {
+    position: absolute;
+    left : 380px;
+    top  : 215px;
+}
+
+#passwordloginlabel {
+    position: absolute;
+    left : 380px;
+    top  : 275px;
+}
+
+#ageprofilelabel {
+    position : absolute;
+    left : 380px;
+    top  : 185px;
+}
+#cityprofilelabel {
+    position: absolute;
+    left : 380px;
+    top  : 235px;
+}
+
+#homepageprofilelabel {
+    position: absolute;
+    left : 380px;
+    top  : 290px;
+}
+.smallwordinputfield {
+    margin-left:50px;
+}
+
 #canvas {
-    border: 2px black solid;
+    position: absolute;
+    top: 220px;
+    left: 310px;
+    /* border: black solid 2px; */
+    cursor: url('/images/pen.ico') 23 93, auto;
+
 }
 
-#inputfields{
-    padding-left: 290px;
+#signherelabel {
+    position: absolute;
+    top: 300px;
+    left: 230px;
 }
 
-#yoursignature {
-    border: 2px black solid;
+/* Set label font */
+label {
+  font : .8em "typewriter", sans-serif;
 }
 
-.signees {
-  list-style-type: none;
-  text-align: center;
+
+/* Remove text field borders and redefine */
+input, textarea {
+  font    : .9em/1.5em "handwriting", sans-serif;
+
+  border  : none;
+  padding : 0 10px;
+  margin  : 0;
+  width   : 240px;
+
+  background: none;
 }
 
-.submit{
-    width: 20em;
-    margin-top: 40px;
+
+
+input:focus, textarea:focus {
+  background   : rgba(0,0,0,.1);
+  border-radius: 5px;
+  outline      : none;
+}
+input {
+    height: 2.5em; /* for IE */
+    vertical-align: middle; /* This is optional but it makes legacy IEs look better */
+}
+
+textarea {
+  display : block;
+
+  padding : 10px;
+  margin  : 10px 0 0 -10px;
+  width   : 340px;
+  height  : 360px;
+
+  resize  : none;
+  overflow: auto;
+}
+
+/* Register button */
+button {
+  position     : absolute;
+  left         : 600px;
+  top          : 400px;
+
+  padding      : 5px;
+
+  font         : bold .6em sans-serif;
+  border       : 2px solid #333;
+  border-radius: 5px;
+  background   : none;
+
+  cursor       : pointer;
+
+-webkit-transform: rotate(-1.5deg);
+   -moz-transform: rotate(-1.5deg);
+    -ms-transform: rotate(-1.5deg);
+     -o-transform: rotate(-1.5deg);
+        transform: rotate(-1.5deg);
+}
+
+
+/* button:after {
+  content: " >>>";
+} */
+
+button:hover,
+button:focus {
+  outline   : none;
+  background: #000;
+  color   : #FFF;
+
+}
+
+
+#login {
+    top: 20px;
+    left: 75%;
+    -webkit-transform: rotate(0deg);
+       -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+         -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+}
+#logintext{
+    color: black;
+    text-decoration: none;
+}
+#logintext:hover, #logintext:focus {
+    color: #FFF;
+}
+
+#signout {
+    top: 20px;
+    left: 5%;
+    -webkit-transform: rotate(0deg);
+       -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+         -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+}
+#signouttext{
+    color: black;
+    text-decoration: none;
+}
+#signouttext:hover, #signouttext:focus {
+    color: #FFF;
+}
+#signsubmit {
+    left         : 650px;
+    top          : 450px;
 }

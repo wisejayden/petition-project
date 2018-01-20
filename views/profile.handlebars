@@ -1,19 +1,33 @@
-<h1> Sign our Petition </h1>
-<img id="image" src="/coming-soon.jpg"></img>
 {{#if error}}
     <p>You dun goofed up son</p>
 {{/if}}
 
-<div id="inputfields">
-    <form method="post">
-        <input type="text" name ="age"id="age" placeholder="Age" value =""/>
-        <input type="text" name="city" id="city" placeholder="City" value="" />
-        <input type="text" name ="homepage"id="homepage" placeholder="Homepage" value="" />
+
+<form id="formprofile" method="post">
+
+    <div id="ageprofilelabel">
+        <label for"age">age:</label>
+        <input type="text" name="age" placeholder="optional"  class="smallwordinputfield">
+    </div>
+
+    <div id="cityprofilelabel">
+        <label for="city">city:</label>
+        <input type="text" name="city" placeholder="optional"  class="smallwordinputfield">
+    </div>
+
+    <div id="homepageprofilelabel">
+        <label for"homepage">homepage:</label>
+        <input type="text" placeholder="optional" name="homepage">
+    </div>
 
 
-        <input class="submit" type="submit" value="submit">
-        <input type="hidden" name="_csrf" value="{{Token}}">
-    </form>
-    <p><a href='/signout' >If you wish to sign out</a></p>
+    <div class="button">
+        <button type="submit">Update Profile</button>
+    </div>
+    <input type="hidden" name="_csrf" value="{{Token}}">
+</form>
 
+
+<div class="button" >
+    <button id="signout" type='button'><a href='/signout' id="signouttext">Signout</a></button>
 </div>

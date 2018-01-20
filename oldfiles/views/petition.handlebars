@@ -1,0 +1,20 @@
+
+
+<h1> Please Log In </h1>
+<img id="image" src="/coming-soon.jpg"></img>
+{{#if error}}
+    <p>You dun goofed up son</p>
+{{/if}}
+
+<div id="inputfields">
+    <form method="post">
+        <input type="hidden" name="hiddensig" id="sig" / >
+        <canvas id="canvas" width="300" height="50"></canvas>
+
+        <input type="hidden" name="hiddensig" id="sig" / >
+        <input class="submit" type="submit" value="submit">
+        <input type="hidden" name="_csrf" value="{{Token}}">
+    </form>
+</div>
+<a href='/profile/edit'>Click here to edit your profile</a>
+<p><a href='/signout' >If you wish to sign out</a></p>

@@ -1,0 +1,30 @@
+body {
+    background-color: rgb(105, 175, 214);
+}
+h1 {
+    text-align: center;
+}
+#image {
+    padding-left: 290px;
+}
+#canvas {
+    border: 2px black solid;
+}
+
+#inputfields{
+    padding-left: 290px;
+}
+
+#yoursignature {
+    border: 2px black solid;
+}
+
+.signees {
+  list-style-type: none;
+  text-align: center;
+}
+
+.submit{
+    width: 20em;
+    margin-top: 40px;
+}

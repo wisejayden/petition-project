@@ -1,20 +1,27 @@
 
 
-<h1> Please Log In </h1>
-<img id="image" src="/coming-soon.jpg"></img>
 {{#if error}}
     <p>You dun goofed up son</p>
 {{/if}}
 
-<div id="inputfields">
-    <form method="post">
-        <input type="hidden" name="hiddensig" id="sig" / >
-        <canvas id="canvas" width="300" height="50"></canvas>
 
-        <input type="hidden" name="hiddensig" id="sig" / >
-        <input class="submit" type="submit" value="submit">
-        <input type="hidden" name="_csrf" value="{{Token}}">
-    </form>
+<form id="formsign" method="post">
+    <input type="hidden" name="hiddensig" id="sig" / >
+
+    <div id="signherelabel">
+        <label for="city">sign here:</label>
+    </div>
+
+    <canvas id="canvas" width="400" height="200"></canvas>
+
+    <div class="button">
+        <button id="signsubmit" type="submit">Submit</button>
+    </div>
+
+    <input type="hidden" name="_csrf" value="{{Token}}">
+</form>
+
+
+<div class="button" >
+    <button id="signout" type='button'><a href='/signout' id="signouttext">Signout</a></button>
 </div>
-<a href='/profile/edit'>Click here to edit your profile</a>
-<p><a href='/signout' >If you wish to sign out</a></p>

@@ -1,0 +1,40 @@
+
+{{#if error}}
+    <p>You dun goofed up son</p>
+{{/if}}
+
+<form method="post">
+    <h1 id="firstname">first name:</h1>
+
+    <div id="lastnamelabel">
+        <label for="name">last name:</label>
+        <input type="text" name ="firstname" id="lastname" placeholder=""/>
+    </div>
+
+    <div id="emaillabel">
+        <label for="mail">email:</label>
+        <input type="text" name="lastname" id="email" placeholder="Last Name" value="" />
+    </div>
+
+    <div id="message">
+        <label for="msg">Petition to ban Winter<br>in Berlin</label>
+        <textarea id="msg" name="user_message"></textarea>
+    </div>
+
+    <div class="button">
+        <button type="submit">Register now</button>
+    </div>
+    <input type="hidden" name="_csrf" value="{{Token}}">
+</form>
+
+
+        <!-- <input type="text" name ="email"id="email" placeholder="Email Address" value="" />
+
+        <input type="password" name="password" placeholder="password" value=""/>
+
+        <input type="hidden" name="hiddensig" id="sig" / >
+        <input class="submit" type="submit" value="submit">
+
+    </form>
+</div>
+<p><a href='/login' >Click Here to log in</a></p> -->

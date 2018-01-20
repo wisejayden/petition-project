@@ -1,18 +1,25 @@
-<h1> Please Log In </h1>
-<img id="image" src="/coming-soon.jpg"></img>
 {{#if error}}
     <p>You dun goofed up son</p>
 {{/if}}
 
-<div id="inputfields">
-    <form method="post">
-        <input type="text" name ="email"id="email" placeholder="Email Address" value="jim@jam.com" />
-        <input type="password" name="password" placeholder="password" value ="jim" />
 
-        <input type="hidden" name="hiddensig" id="sig" / >
-        <input class="submit" type="submit" value="submit">
+<form id="formlogin" method="post">
+    <div id="emailloginlabel">
+        <label for"email">email:</label>
+        <input type="text" name="email" class="emailregoinputfield">
+    </div>
+
+    <div id="passwordloginlabel">
+        <label for"email">password:</label>
+        <input type="text" name="password" class="password">
+    </div>
+
+
+        <div class="button">
+            <button type="submit">Log in >>></button>
+        </div>
         <input type="hidden" name="_csrf" value="{{Token}}">
     </form>
-</div>
-
-<p><a href='/register' >Click here to register</a></p>
+    <div class="button" >
+        <button id="login" type='button'><a href='/register' id="logintext">Forgot to Register? Click here..</a></button>
+    </div>

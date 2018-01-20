@@ -1,20 +1,54 @@
-<h1> Sign our Petition </h1>
-<img id="image" src="/coming-soon.jpg"></img>
+
 {{#if error}}
     <p>You dun goofed up son</p>
 {{/if}}
 
-<div id="inputfields">
-    <form method="post">
-        <input type="text" name ="firstname"id="firstname" placeholder="First Name" value =""/>
-        <input type="text" name="lastname" id="lastName" placeholder="Last Name" value="" />
-        <input type="text" name ="email"id="email" placeholder="Email Address" value="" />
-        <input type="password" name="password" placeholder="password" value=""/>
+<form method="post">
 
-        <input type="hidden" name="hiddensig" id="sig" / >
-        <input class="submit" type="submit" value="submit">
-        <input type="hidden" name="_csrf" value="{{Token}}">
+    <div id ="firstregolabel">
+        <label for="firstname">first name:</label>
+        <input type="text" name="firstname" class="firstname" />
+    </div>
 
-    </form>
+    <div id="lastregolabel">
+        <label for="name">last name:</label>
+        <input type="text" name ="lastname" class="lastname" placeholder=""/>
+    </div>
+
+    <div id="emailregolabel">
+        <label for="mail">email:</label>
+        <input type="text" name="email" class="emailregoinputfield" placeholder=""/>
+    </div>
+
+    <div id="regopassword">
+        <label for="password">password:</label>
+
+        <input type="text" name="password" class="password" placeholder=""/>
+    </div>
+
+    <div id="message">
+        <label for="msg">Petition to ban Winter<br>in Berlin</label>
+        <textarea id="msg" name="user_message"></textarea>
+    </div>
+
+
+    <div class="button">
+        <button type="submit">Register >>></button>
+    </div>
+    <input type="hidden" name="_csrf" value="{{Token}}">
+</form>
+<div class="button" >
+    <button id="login" type='button'><a href='/login' id="logintext">Already Registered? Click Here to log in..</a></button>
 </div>
-<p><a href='/login' >Click Here to log in</a></p>
+
+
+
+
+
+
+
+
+
+<!--
+        <input type="hidden" name="hiddensig" id="sig" / >
+     -->
