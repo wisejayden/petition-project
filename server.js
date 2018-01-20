@@ -197,6 +197,7 @@ app.get('/petition', checkCookie, checkProfile,  function(req, res) {
 });
 
 app.post('/petition', function(req, res) {
+    console.log("On post check the hiddensig", req.body.hiddensig);
     addSignature(req.body.hiddensig[0], req.session.user.id)
         .then(() => {
             req.session.user.hasSigned = true;
@@ -210,7 +211,9 @@ app.post('/petition', function(req, res) {
 //
 //Get thankyou page. Call function from module to retrieve signature.
 app.get('/petition/signed', checkCookie, checkProfile, checkForSignature, function(req, res) {
+    console.log(req.session.user)
     getSignature(req.session.user.id).then((results) => {
+        console.log("TEST TES", results.rows);
         res.render('signed', {
             signature: results.rows[0].signature
         });

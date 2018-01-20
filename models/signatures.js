@@ -26,6 +26,7 @@ module.exports.getSignature = function getSignature(id) {
         .query(
             `SELECT signature FROM signatures WHERE user_id = $1`,
             [id]
+            // `SELECT * FROM signatures`
         )
         .then(function(results) {
             console.log("getSignature then");

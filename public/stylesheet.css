@@ -138,7 +138,7 @@ form {
 
 #canvas {
     position: absolute;
-    top: 220px;
+    top: 165px;
     left: 310px;
     /* border: black solid 2px; */
     cursor: url('/images/pen.ico') 23 93, auto;
@@ -151,9 +151,23 @@ form {
     left: 230px;
 }
 
+h1 {
+    text-align: center;
+}
+
+.signedpage {
+    text-align: center;
+}
+
+ul {
+    list-style: none;
+}
 /* Set label font */
 label {
   font : .8em "typewriter", sans-serif;
+}
+.signees {
+    text-align: center;
 }
 
 
@@ -265,4 +279,80 @@ button:focus {
 #signsubmit {
     left         : 650px;
     top          : 450px;
+}
+
+/* .thankyoubutton {
+    top: 50%;
+    left: 50%;
+    font: bold 1em sans-serif;
+    color: black;
+    text-decoration: none;
+
+    -webkit-transform: rotate(0deg);
+       -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+         -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+
+} */
+#deletesignature {
+    top: 70%;
+}
+/* #deletesignaturesigned {
+    color: black;
+    text-decoration: none;
+}
+#editprofilesigned {
+    color: black;
+    text-decoration: none;
+} */
+
+
+.thankyoubutton:hover,
+.thankyoubutton:focus {
+  outline   : none;
+  background: none;
+  color   : none;
+
+}
+
+
+
+#profileeditbutton {
+    top: 100px;
+    left: 5%;
+    border: 2px solid #524f7a;
+
+    -webkit-transform: rotate(0deg);
+       -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+         -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+}
+#gobackbutton {
+    top: 60px;
+    background-color: #524f7a;
+
+    border: none;
+    left: 5%;
+    -webkit-transform: rotate(0deg);
+       -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+         -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+}
+
+#profileedittext {
+    color: #524f7a;
+    text-decoration: none;
+}
+#gobacktext {
+    color: white;
+    text-decoration: none;
+}
+#profileedittext:hover, #profileedittext:focus {
+    color: #FFF;
+}
+#gobacktext:hover, #gobacktext:focus {
+    color: #FFF;
 }

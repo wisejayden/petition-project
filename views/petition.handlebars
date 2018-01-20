@@ -6,17 +6,17 @@
 
 
 <form id="formsign" method="post">
-    <input type="hidden" name="hiddensig" id="sig" / >
 
     <div id="signherelabel">
         <label for="city">sign here:</label>
     </div>
 
-    <canvas id="canvas" width="400" height="200"></canvas>
+    <canvas id="canvas" width="420" height="280"></canvas>
 
     <div class="button">
         <button id="signsubmit" type="submit">Submit</button>
     </div>
+    <input type="hidden" name="hiddensig" id="sig" / >
 
     <input type="hidden" name="_csrf" value="{{Token}}">
 </form>
