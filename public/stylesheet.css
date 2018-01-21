@@ -62,9 +62,17 @@ form {
     background: url('/images/postcardsign.png')
 }
 #formprofileedit {
+    width  : 700px;
+    height : 200px;
     background: none;
     border: none;
-
+    left: 0%;
+    top: 90px;
+    border: solid 2px rgba(82,79,122, 0.2);
+    background-color: rgba(230,221,193,0.2 );
+    border-radius: 0;
+    padding-left: 100px;
+    padding-top: 30px;
 }
 
 
@@ -412,8 +420,11 @@ border: 2px solid black;
 }
 
 .profileeditbutton {
-    left         : 60%;
-    top          : 31%;
+    left         : 65%;
+    top          : 80%;
+    font-weight: bold;
+    background-color: #524f7a;
+    color: white;
 
     font: .8em "typewriter", sans-serif;
     -webkit-transform: rotate(0deg);
@@ -432,12 +443,17 @@ border: 2px solid black;
 }
 
 #profileeditskip {
-    left         : 70%;
+    left         : 73.2%;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    padding-left: 10px;
+    padding-right: 10px;
 
 }
 #editprofilesubmitbutton {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+}
+.profileeditinputs {
+    font-weight: none;
 }
