@@ -1,7 +1,5 @@
 
-{{#if error}}
-    <p>You dun goofed up son</p>
-{{/if}}
+
 
 <form method="post">
 
@@ -12,7 +10,7 @@
 
     <div id="lastregolabel">
         <label for="name">last name:</label>
-        <input type="text" name ="lastname" class="lastname" placeholder=""/>
+        <input type="text" name ="lastname" class="smallinputbuffer" placeholder=""/>
     </div>
 
     <div id="emailregolabel">
@@ -23,13 +21,19 @@
     <div id="regopassword">
         <label for="password">password:</label>
 
-        <input type="password" name="password" class="password" placeholder=""/>
+        <input type="password" name="password" class="smallinputbuffer" placeholder=""/>
     </div>
 
     <div id="message">
-        <label for="msg">Petition to ban Winter<br>in Berlin</label>
-        <textarea id="msg" name="user_message"></textarea>
+        <label id="petitiontitle" for="msg">Petition to ban Winter in Berlin</label>
+        <textarea id="msg" name="user_message" placeholder="Write your message here..."></textarea>
     </div>
+
+    {{#if error}}
+        <div class="errormessage">
+            <p>Please fill all fields. A message is optional.</p>
+        </div>
+    {{/if}}
 
 
     <div class="button">
@@ -38,7 +42,7 @@
     <input type="hidden" name="_csrf" value="{{Token}}">
 </form>
 <div class="button" >
-    <button id="login" type='button'><a href='/login' id="logintext">Already Registered? Click Here to log in..</a></button>
+    <a href='/login' id="logintext"><button id="login" type='button'>Already Registered? Click Here to log in..</button></a>
 </div>
 
 

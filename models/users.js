@@ -12,6 +12,9 @@ module.exports.addLogin = function (first, last, email, hashedPass) {
             const sigId = results.rows[0].id;
             console.log("INSERTION SUCCESSFUL");
             return sigId;
+        })
+        .catch((error) => {
+            throw error;
         });
 };
 
@@ -27,8 +30,9 @@ module.exports.getDetails = function (email) {
 
             return results;
         })
-        .catch(() =>{
+        .catch((error) =>{
             console.log("CheckEmailCatch");
+            throw error;
         });
 };
 

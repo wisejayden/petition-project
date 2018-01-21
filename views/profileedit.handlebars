@@ -9,14 +9,14 @@
             <label for="firstname">First Name:</label>
         </div>
         <div id="profileeditfields">
-            <input class="profileeditinputs" type="text" name ="firstname" placeholder="First Name" value ="{{first}}"/>
+            <input class="profileeditinputs" type="text" name ="firstname" value ="{{first}}"/>
         </div>
 
         <div class="profileeditlabels" id="lastnameprofilelabel">
             <label for="lastname">Last Name:</label>
         </div>
         <div id="profileeditfields">
-            <input class="profileeditinputs" type="text" name="lastname"placeholder="Last Name" value="{{last}}" />
+            <input class="profileeditinputs" type="text" name="lastname" value="{{last}}" />
         </div>
 
 
@@ -24,14 +24,14 @@
             <label for="email">Email:</label>
         </div>
         <div id="profileeditfields">
-            <input class="profileeditinputs" type="text" name ="email"  placeholder="Email Address" value="{{#if email}}{{email}}{{/if}}" />
+            <input class="profileeditinputs" type="text" name ="email"  value="{{#if email}}{{email}}{{/if}}" />
         </div>
 
         <div class="profileeditlabels" id="passwordprofileedit">
             <label for="password">Password:</label>
         </div>
         <div id="profileeditfields">
-            <input class="profileeditinputs" type="password" name ="password" placeholder="Password" value="" />
+            <input class="profileeditinputs" type="password" name ="password" value="" />
         </div>
 
 
@@ -39,33 +39,33 @@
             <label for="age">Age:</label>
         </div>
         <div id="profileeditfields">
-            <input class="profileeditinputs" type="text"  name ="age"  placeholder="Age" value ="{{#if age}}{{age}}{{/if}}"/>
+            <input class="profileeditinputs" type="text"  name ="age" value ="{{#if age}}{{age}}{{/if}}"/>
         </div>
 
         <div class="profileeditlabels" >
             <label for"city">City:</labael>
             </div>
         <div id="profileeditfields">
-            <input class="profileeditinputs" type="text" name ="city" placeholder="City" value ="{{#if city}}{{city}}{{/if}}"/>
+            <input class="profileeditinputs" type="text" name ="city"value ="{{#if city}}{{city}}{{/if}}"/>
         </div>
 
         <div class="profileeditlabels" id="homepageprofileedit">
             <label for"homepage">Homepage:</homepage>
             </div>
         <div>
-                <input class="profileeditinputs" type="text" name ="homepage" placeholder="Homepage" value ="{{#if homepage}}{{homepage}}{{/if}}"/>
+                <input class="profileeditinputs" type="text" name ="homepage"  value ="{{#if homepage}}{{homepage}}{{/if}}"/>
         </div>
 
 
         <input type="hidden" name="_csrf" value="{{Token}}">
     </div>
     <!-- <input class="submit" type="submit" value="Update"> -->
-    <div class="button">
+    <div class="button" id="editprofilebuttoncontainer">
         <div class="button">
-            <button class="profileeditbutton" id="editprofilesubmitbutton" type="submit" >Update</button>
+            <button class="editprofilepagebutton" id="editprofilesubmitbutton" type="submit" >Update</button>
         </div>
         <div class="button">
-            <a href='/petition/signed'><button class="profileeditbutton" id="profileeditskip" type="button"> Skip</button></a>
+            <a href='/petition/signed'><button class="editprofilepagebutton" id="profileeditskip" type="button"> Skip</button></a>
         </div>
     </div>
 

@@ -93,9 +93,12 @@ app.post('/register', function(req, res) {
                     };
                     res.redirect('profile');
                 })
-                .catch(() => {
+                .catch((error) => {
                     console.log("Registration error");
-                    res.render('register');
+                    res.render('register', {
+                        error: error,
+                        Token: req.csrfToken()
+                    });
                 });
         });
 });
@@ -169,15 +172,26 @@ app.post('/login', function(req, res) {
                             });
                     } else {
                         console.log("something went wrong with your login");
-                        res.render('login');
+                        res.render('login', {
+                            Token: req.csrfToken(),
+                            wrongpassword: error
+                        });
                     }
                 })
-                .catch(() => {
+                .catch((error) => {
                     console.log("doesMatch catch");
+                    res.render('login', {
+                        wrongpassword: error,
+                        Token: req.csrfToken()
+                    });
                 });
         })
-        .catch(() => {
+        .catch((error) => {
             console.log("checkemail catch");
+            res.render('login', {
+                wrongdetails: error,
+                Token: req.csrfToken()
+            });
         });
 
 });

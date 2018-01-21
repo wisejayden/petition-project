@@ -11,9 +11,19 @@
 
     <div id="passwordloginlabel">
         <label for"email">password:</label>
-        <input type="text" name="password" class="password">
+        <input type="password" name="password" class="smallinputbuffer">
     </div>
 
+    {{#if wrongpassword}}
+        <div class="errormessage">
+            <p>Wrong password</p>
+        </div>
+    {{/if}}
+    {{#if wrongdetails}}
+        <div class="errormessage">
+            <p>Email does not match</p>
+        </div>
+    {{/if}}
 
         <div class="button">
             <button type="submit">Log in >>></button>
@@ -21,5 +31,5 @@
         <input type="hidden" name="_csrf" value="{{Token}}">
     </form>
     <div class="button" >
-        <button id="login" type='button'><a href='/register' id="logintext">Forgot to Register? Click here..</a></button>
+        <a href='/register' id="logintext"><button id="login" type='button'>Forgot to Register? Click here..</button></a>
     </div>

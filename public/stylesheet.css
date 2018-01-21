@@ -73,6 +73,7 @@ form {
     border-radius: 0;
     padding-left: 100px;
     padding-top: 30px;
+    padding-right: 120px;
 }
 
 
@@ -111,7 +112,18 @@ form {
 #message {
   position: absolute;
   left : 20px;
-  top  : 70px;
+  top  : 160px;
+}
+#msg {
+    font-weight: none;
+}
+
+.errormessage {
+    font: 0.5em "typewriter", sans-serif;
+    color: rgb(167, 56, 55);
+    position: absolute;
+    top: 80%;
+    left: 51%;
 }
 .emailregoinputfield {
     margin-left: 40px;
@@ -179,12 +191,30 @@ ul {
 label {
   font : .8em "typewriter", sans-serif;
 }
+#petitiontitle {
+    font: 1em "typewriter", sans-serif;
+    font-weight: bold;
+}
+
+.signatures {
+    margin-top: 100px;
+    text-decoration: none;
+
+
+}
+
 .signees {
     text-align: center;
+    text-decoration: none;
+
 }
 
 #yoursignature {
     margin-left: 120px;
+}
+
+.smallinputbuffer {
+    margin-left: 10px;
 }
 
 
@@ -214,13 +244,18 @@ label {
 .profileeditlabels {
     /* border: 1px solid black; */
     padding-top: 10px;
+
+
 }
 
 
 
 .profileeditinputs {
-    margin: 0;
+    margin-top: 2px;
     /* border: 1px solid black; */
+    background-color: rgba(0,0,0,.05);
+    padding-left: 5px;
+
 }
 
 
@@ -338,7 +373,9 @@ button:focus {
     left         : 650px;
     top          : 450px;
 }
-
+#editprofilebuttoncontainer {
+    top: 50%;
+}
 /* .thankyoubutton {
     top: 50%;
     left: 50%;
@@ -379,7 +416,8 @@ button:focus {
 #profileeditbutton {
     top: 100px;
     left: 5%;
-    border: 2px solid #524f7a;
+    background-color: #524f7a;
+    color: white;
 
     -webkit-transform: rotate(0deg);
        -moz-transform: rotate(0deg);
@@ -387,9 +425,12 @@ button:focus {
          -o-transform: rotate(0deg);
             transform: rotate(0deg);
 }
+
+
 #gobackbutton {
     top: 60px;
     background-color: #524f7a;
+    color: white;
 
     border: none;
     left: 5%;
@@ -400,14 +441,8 @@ button:focus {
             transform: rotate(0deg);
 }
 
-#profileedittext {
-    color: #524f7a;
-    text-decoration: none;
-}
-#gobacktext {
-    color: white;
-    text-decoration: none;
-}
+
+
 #profileedittext:hover, #profileedittext:focus {
     color: #FFF;
 }
@@ -419,20 +454,7 @@ button:focus {
 border: 2px solid black;
 }
 
-.profileeditbutton {
-    left         : 65%;
-    top          : 80%;
-    font-weight: bold;
-    background-color: #524f7a;
-    color: white;
 
-    font: .8em "typewriter", sans-serif;
-    -webkit-transform: rotate(0deg);
-       -moz-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-         -o-transform: rotate(0deg);
-            transform: rotate(0deg);
-}
 
 .profileeditbutton:hover,
 .profileeditbutton:focus {
@@ -443,16 +465,33 @@ border: 2px solid black;
 }
 
 #profileeditskip {
-    left         : 73.2%;
+    top: 80%;
+    left: 72.2%;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     padding-left: 10px;
     padding-right: 10px;
+    -webkit-transform: rotate(0deg);
+       -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+         -o-transform: rotate(0deg);
+            transform: rotate(0deg);
 
 }
 #editprofilesubmitbutton {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+
+    top: 80%;
+    left: 65%;
+
+    padding-left: 10px;
+    padding-right: 10px;
+    -webkit-transform: rotate(0deg);
+       -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+         -o-transform: rotate(0deg);
+            transform: rotate(0deg);
 }
 .profileeditinputs {
     font-weight: none;

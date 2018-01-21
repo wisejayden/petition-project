@@ -1,18 +1,26 @@
-<img id="image" src="/coming-soon.jpg"></img>
 <div class="signatures">
 
 
 
     {{#signatures}}
         <ul class="signees">
-            <li><a href="http://{{ url }}">
+            <li><a target="_blank" href="http://{{ url }}">
                 {{ first }} {{ last }}</a>
-                {{#if age}}({{age}}){{/if}}</li>
+                {{#if age}}({{age}} years old){{/if}}</li>
             <!-- <a href="'/signatures/' + {{city}} " > {{city }} </a> -->
         </ul>
     {{/signatures}}
 </div>
 
-<p><a href='/petition/signed' >Go back</a></p>
-<p><a href='/signout' >If you wish to sign out</a></p>
-<a href='/profile/edit'>Click here to edit your profile</a>
+<div class="button" >
+    <a href='/profile/edit' id="profileedittext"><button id="profileeditbutton" type='button'>Edit Profile</button></a>
+</div>
+
+
+<div class="button" >
+    <a href='/petition/signers' id="gobacktext"><button id="gobackbutton" type='button'>Go back</button></a>
+</div>
+
+<div class="button" >
+    <a href='/signout' id="signouttext"><button id="signout" type='button'>Sign out</button></a>
+</div>

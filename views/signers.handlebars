@@ -3,12 +3,12 @@
 
     {{#signatures}}
         <ul class="signees">
-            {{#if url}}<li><a href="http://{{ url }}">{{ first }} {{ last }}</a>{{/if}}
+            {{#if url}}<li><a target="_blank" href="http://{{ url }}">{{ first }} {{ last }}</a>{{/if}}
 
             {{#unless url}}<li>{{first}} {{last}}</li>{{/unless}}
 
 
-            {{#if age}}{{age}}{{/if}}
+            {{#if age}}({{age}} years old){{/if}}
             {{#if city}}<a href="/signers/{{city}}">{{city }} </a> {{/if}}</li>
         </ul>
     {{/signatures}}
@@ -27,5 +27,5 @@
 </div>
 
 <div class="button" >
-    <a href='/signout' id="signouttext"><button id="signout" type='button'>Signout</button></a>
+    <a href='/signout' id="signouttext"><button id="signout" type='button'>Sign out</button></a>
 </div>
