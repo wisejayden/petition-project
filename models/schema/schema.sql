@@ -16,6 +16,7 @@ CREATE TABLE users (
     last VARCHAR(300) not null,
     email VARCHAR(300) unique not null,
     hashed_pass VARCHAR(300) not null,
+    message VARCHAR(500),
     created TIMESTAMP
 );
 

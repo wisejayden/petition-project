@@ -62,13 +62,11 @@ app.use(csurf());
 
 //If no URL, redirect to home
 app.get('/', function(req, res) {
-    console.log("/", req.session.user);
     res.redirect('/register');
 });
 
 //If cookie present, redirect to thankyou page, otherwise present homepage
 app.get('/register',checkForUser, function(req, res) {
-    console.log("/register", req.session.user);
     res.render('register', {
         Token: req.csrfToken()
     });
@@ -81,7 +79,7 @@ app.get('/register',checkForUser, function(req, res) {
 app.post('/register', function(req, res) {
     hashPassword(req.body.password)
         .then(hashedPassword => {
-            addLogin(req.body.firstname, req.body.lastname, req.body.email, hashedPassword)
+            addLogin(req.body.firstname, req.body.lastname, req.body.email, hashedPassword, req.body.message)
                 .then((sigId) => {
                     req.session.hiddensig = sigId;
                     req.session.user = {
@@ -211,7 +209,6 @@ app.get('/petition', checkCookie, checkProfile,  function(req, res) {
 });
 
 app.post('/petition', function(req, res) {
-    console.log("On post check the hiddensig", req.body.hiddensig);
     addSignature(req.body.hiddensig, req.session.user.id)
         .then(() => {
             req.session.user.hasSigned = true;
@@ -225,9 +222,7 @@ app.post('/petition', function(req, res) {
 //
 //Get thankyou page. Call function from module to retrieve signature.
 app.get('/petition/signed', checkCookie, checkProfile, checkForSignature, function(req, res) {
-    console.log(req.session.user)
     getSignature(req.session.user.id).then((results) => {
-        console.log("TEST TES", results.rows);
         res.render('signed', {
             signature: results.rows[0].signature
         });
@@ -253,7 +248,6 @@ app.get('/petition/delete/', checkCookie, checkForSignature, function(req, res) 
 app.get('/profile/edit', checkCookie, checkProfile, function(req, res) {
     var {first_name, last_name, email, id} = req.session.user;
     profileInfo(id).then((results) => {
-        console.log("ON profile edit load view results", results.rows);
         var {age, url, city} = results.rows[0];
         res.render('profileedit', {
             Token: req.csrfToken(),

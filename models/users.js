@@ -2,11 +2,11 @@ var spicedPg = require('spiced-pg');
 
 var db = spicedPg(process.env.DATABASE_URL || 'postgres:dbadmin:spiced@localhost:5432/petition');
 
-module.exports.addLogin = function (first, last, email, hashedPass) {
+module.exports.addLogin = function (first, last, email, hashedPass, message) {
     return db
         .query(
-            `INSERT INTO users (first, last, email, hashed_pass) VALUES ($1, $2, $3, $4) RETURNING id`,
-            [first || null, last || null, email || null, hashedPass || null]
+            `INSERT INTO users (first, last, email, hashed_pass, message) VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+            [first || null, last || null, email || null, hashedPass || null, message]
         )
         .then(function(results) {
             const sigId = results.rows[0].id;

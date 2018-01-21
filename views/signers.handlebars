@@ -5,11 +5,12 @@
         <ul class="signees">
             {{#if url}}<li><a target="_blank" href="http://{{ url }}">{{ first }} {{ last }}</a>{{/if}}
 
-            {{#unless url}}<li>{{first}} {{last}}</li>{{/unless}}
+            {{#unless url}}<li>{{first}} {{last}}{{/unless}}
 
 
             {{#if age}}({{age}} years old){{/if}}
             {{#if city}}<a href="/signers/{{city}}">{{city }} </a> {{/if}}</li>
+            <li>{{#if message}}"{{message}}"{{/if}}</li>
         </ul>
     {{/signatures}}
 </div>
