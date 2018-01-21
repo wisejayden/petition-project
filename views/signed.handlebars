@@ -1,11 +1,19 @@
-<h1> Thankyou for signing the petition! </h1>
-<img src =" {{ signature }}" id="yoursignature" alt"your signature">
+<h1> Thank you for signing the petition! </h1>
 
-<p class="signedpage"><a href='/petition/signers' >Here</a> is list of people who have signed the petition</p>
+<div class="signedcontainer">
+    <div class="signedpage">
+        <img src =" {{ signature }}" id="yoursignature" alt"your signature">
+    </div>
 
-<p class="signedpage"><a href='/profile/edit' id="editprofilesigned">Click here to edit your profile</a></p>
 
-<p class="signedpage"><a id="deletesignaturesigned"  href=/petition/delete/>Delete your signature</a>
+    <div class="signedpage">
+        <p class="signedpage"><a href='/petition/signers' >Here</a> is list of people who have signed the petition</p>
+
+        <p class="signedpage"><a href='/profile/edit' id="editprofilesigned">Click here to edit your profile</a></p>
+
+        <p class="signedpage"><a id="deletesignaturesigned"  href=/petition/delete/>Delete your signature</a>
+    </div>
+</div>
 
 <!-- <div class="button">
     <button class="thankyoubutton"><a href='/profile/edit' id="editprofilesigned">Click here to edit your profile</a>

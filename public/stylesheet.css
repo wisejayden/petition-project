@@ -61,6 +61,11 @@ form {
 #formsign {
     background: url('/images/postcardsign.png')
 }
+#formprofileedit {
+    background: none;
+    border: none;
+
+}
 
 
 
@@ -170,16 +175,62 @@ label {
     text-align: center;
 }
 
+#yoursignature {
+    margin-left: 120px;
+}
+
+
+
+
+/* .profileeditcontainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: 2px solid black;
+
+
+}
+.profileeditlabels {
+    border: 2px solid black;
+} */
+
+.profileeditcontainer {
+    /* border: 1px solid black; */
+    display: grid;
+    grid-template-columns: 100px 1fr 100px 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+
+}
+
+.profileeditlabels {
+    /* border: 1px solid black; */
+    padding-top: 10px;
+}
+
+
+
+.profileeditinputs {
+    margin: 0;
+    /* border: 1px solid black; */
+}
+
+
+
+
+
+
 
 /* Remove text field borders and redefine */
 input, textarea {
-  font    : .9em/1.5em "handwriting", sans-serif;
+  font    : 1.2em/1.5em "handwriting", sans-serif;
+  font-weight: bold;
 
   border  : none;
-  padding : 0 10px;
+  /* padding : 0 10px; */
   margin  : 0;
   width   : 240px;
-
+  height: 40px;
   background: none;
 }
 
@@ -187,13 +238,12 @@ input, textarea {
 
 input:focus, textarea:focus {
   background   : rgba(0,0,0,.1);
+  height: 40px;
   border-radius: 5px;
   outline      : none;
+  /* position: absolute; */
 }
-input {
-    height: 2.5em; /* for IE */
-    vertical-align: middle; /* This is optional but it makes legacy IEs look better */
-}
+
 
 textarea {
   display : block;
@@ -355,4 +405,39 @@ button:focus {
 }
 #gobacktext:hover, #gobacktext:focus {
     color: #FFF;
+}
+
+#buttoncontainer {
+border: 2px solid black;
+}
+
+.profileeditbutton {
+    left         : 60%;
+    top          : 31%;
+
+    font: .8em "typewriter", sans-serif;
+    -webkit-transform: rotate(0deg);
+       -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+         -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+}
+
+.profileeditbutton:hover,
+.profileeditbutton:focus {
+  outline   : none;
+  background: none;
+  color   : black;
+
+}
+
+#profileeditskip {
+    left         : 70%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+
+}
+#editprofilesubmitbutton {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }

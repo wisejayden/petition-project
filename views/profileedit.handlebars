@@ -1,23 +1,77 @@
-<h1> Sign our Petition </h1>
-<img id="image" src="/coming-soon.jpg"></img>
 {{#if error}}
     <p>You dun goofed up son</p>
 {{/if}}
-
-<div id="inputfields">
-    <form method="post">
-        <input type="text" name ="firstname"id="firstnameedit" placeholder="First Name" value ="{{first}}"/>
-        <input type="text" name="lastname" id="lastnameedit" placeholder="Last Name" value="{{last}}" />
-        <input type="text" name ="email"id="emailedit" placeholder="Email Address" value="{{#if email}}{{email}}{{/if}}" />
-        <input type="text" name ="password"id="passwordedit" placeholder="Password" value="" />
-        <input type="text" name ="age" id="ageedit" placeholder="Age" value ="{{#if age}}{{age}}{{/if}}"/>
-        <input type="text" name ="city"id="city" placeholder="City" value ="{{#if city}}{{city}}{{/if}}"/>
-        <input type="text" name ="homepage" id="homepage" placeholder="Homepage" value ="{{#if homepage}}{{homepage}}{{/if}}"/>
+    <form id="formprofileedit" method="post">
+        <div class="profileeditcontainer">
 
 
+        <div class="profileeditlabels" id="firstnameprofilelabel">
+            <label for="firstname">First Name:</label>
+        </div>
+        <div id="profileeditfields">
+            <input class="profileeditinputs" type="text" name ="firstname" placeholder="First Name" value ="{{first}}"/>
+        </div>
 
-        <input class="submit" type="submit" value="Update">
+        <div class="profileeditlabels" id="lastnameprofilelabel">
+            <label for="lastname">Last Name:</label>
+        </div>
+        <div id="profileeditfields">
+            <input class="profileeditinputs" type="text" name="lastname"placeholder="Last Name" value="{{last}}" />
+        </div>
+
+
+        <div class="profileeditlabels" id="emailprofileedit">
+            <label for="email">Email:</label>
+        </div>
+        <div id="profileeditfields">
+            <input class="profileeditinputs" type="text" name ="email"  placeholder="Email Address" value="{{#if email}}{{email}}{{/if}}" />
+        </div>
+
+        <div class="profileeditlabels" id="passwordprofileedit">
+            <label for="password">Password:</label>
+        </div>
+        <div id="profileeditfields">
+            <input class="profileeditinputs" type="password" name ="password" placeholder="Password" value="" />
+        </div>
+
+
+        <div class="profileeditlabels" id ="ageprofileedit">
+            <label for="age">Age:</label>
+        </div>
+        <div id="profileeditfields">
+            <input class="profileeditinputs" type="text"  name ="age"  placeholder="Age" value ="{{#if age}}{{age}}{{/if}}"/>
+        </div>
+
+        <div class="profileeditlabels" >
+            <label for"city">City:</labael>
+            </div>
+        <div id="profileeditfields">
+            <input class="profileeditinputs" type="text" name ="city" placeholder="City" value ="{{#if city}}{{city}}{{/if}}"/>
+        </div>
+
+        <div class="profileeditlabels" id="homepageprofileedit">
+            <label for"homepage">Homepage:</homepage>
+            </div>
+        <div>
+                <input class="profileeditinputs" type="text" name ="homepage" placeholder="Homepage" value ="{{#if homepage}}{{homepage}}{{/if}}"/>
+        </div>
+
+
         <input type="hidden" name="_csrf" value="{{Token}}">
+    </div>
+    <!-- <input class="submit" type="submit" value="Update"> -->
+    <div class="button">
+        <div class="button">
+            <button class="profileeditbutton" id="editprofilesubmitbutton" type="submit" >Update</button>
+        </div>
+        <div class="button">
+            <a href='/petition/signed'><button class="profileeditbutton" id="profileeditskip" type="button"> Skip</button></a>
+        </div>
+    </div>
+
     </form>
-</div>
-<p><a href='/login' >Click Here to skip</a></p>
+
+
+
+<div class="button" >
+    <button id="signout" type='button'><a href='/signout' id="signouttext">Signout</a></button>

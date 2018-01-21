@@ -1,6 +1,6 @@
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext("2d");
-var submit = $('.submit');
+var submit = $('#signsubmit ');
 var sigData = $('#sig');
 var firstName = $('#firstname');
 var lastName = $('#lastname');

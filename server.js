@@ -198,7 +198,7 @@ app.get('/petition', checkCookie, checkProfile,  function(req, res) {
 
 app.post('/petition', function(req, res) {
     console.log("On post check the hiddensig", req.body.hiddensig);
-    addSignature(req.body.hiddensig[0], req.session.user.id)
+    addSignature(req.body.hiddensig, req.session.user.id)
         .then(() => {
             req.session.user.hasSigned = true;
             res.redirect('/petition/signed');
